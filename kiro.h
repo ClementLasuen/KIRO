@@ -11,7 +11,7 @@ public :
     void set(double x1, double y1) {x=x1; y=y1;}
     double get_x() {return x;}
     double get_y() {return y;}
-    sommet (double x1, double x2, bool t, int i) { x=x1; y=y1; type_sommet =t; indice =i;}
+    sommet (double x1, double y1, bool t, int i) { x=x1; y=y1; type_sommet =t; indice =i;}
 
 
 };
