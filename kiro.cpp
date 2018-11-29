@@ -40,7 +40,7 @@ vector<node> change_one_node(vector<node> circuit, vector<node> nodes, vector<do
 }
 
 
-vector<vector<node>> clustering(vector<node> nodes_d, vector<node> nodes_t, vector<double> distances) {
+vector<vector<node>> clustering(vector<node> nodes_d, vector<node> nodes_t, vector<int> distances) {
 //    vector<node> clusters;
 //    for (int i=0; i<nodes.size(); i++) {
 //        if (nodes[i].is_terminal() == false) {
@@ -53,7 +53,7 @@ vector<vector<node>> clustering(vector<node> nodes_d, vector<node> nodes_t, vect
     vector<int> index_clusters;
     for (int i=0; i<nodes_t.size(); i++) {
         int index = 0;
-        double min_distance = distances[n*nodes_t[i].get_indice() + nodes_d[0].get_indice()];
+        int min_distance = distances[n*nodes_t[i].get_indice() + nodes_d[0].get_indice()];
         for (int j=0; j<nodes_d.size(); j++) {
             if (distances[n*nodes_t[i].get_indice() + nodes_d[j].get_indice()] < min_distance) {
                 min_distance = distances[n*nodes_t[i].get_indice() + nodes_d[j].get_indice()];
@@ -67,11 +67,12 @@ vector<vector<node>> clustering(vector<node> nodes_d, vector<node> nodes_t, vect
     for (int i=0; i<nodes_d.size(); i++) {
         data[i].push_back(nodes_d[i]);
     }
-    for (int i=0; i<nodes_t.size(), i++) {
+    for (int i=0; i<nodes_t.size(); i++) {
         data[index_clusters[i]].push_back(nodes_t[i]);
     }
 
     return data;
+}
 
 
 // Prend une distribution
