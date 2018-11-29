@@ -12,7 +12,7 @@ int main()
 
     vector<vector<node>> data = clustering(distribution, terminal, D);
 
-
+    switch_chain(data,D);
 
     write(data, string("resu_nice.txt"));
 
