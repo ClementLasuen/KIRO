@@ -30,13 +30,32 @@ vector<node> change_one_node(vector<node> circuit, vector<node> nodes, vector<do
     int j = rand()%nodes.size();
     int compteur=0;
     if(i < circuit.size()-1){
-        while( !nodes[j].is_in(circuit) && nodes[j].is_terminal() && cost(circuit,lenght)>= c && compteur<100){
+        while( !nodes[j].is_in(circuit) && nodes[j].is_terminal() && compteur<100){
             circuit[i] = nodes[j];
             j = rand()%nodes.size();
             compteur++;
         }
     }
 }
+
+// Prend une distribution
+
+void easy_way(vector<node> C, vector<double> lenght , vector<node> &solution, bool hugo = false){
+    int k =0;
+    while( C[k].is_terminal() || C[k].is_in(solution)) k+=1;
+    solution.push_back(C[k]);
+    int i=0;
+    while( k <30){
+        if (i!=k) solution.push_back(C[i]);
+        i++;
+    }
+}
+
+
+
+
+
+
 
 // tEMPERAYITR
 
@@ -57,5 +76,4 @@ void change_T(vector<node> &C, vector<node> nodes, vector<double> lenght){
         beta*=beta;
         temperature(C,nodes,lenght, T0*beta );
     }
-
 }
