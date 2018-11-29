@@ -94,4 +94,3 @@ void write(vector<vector<node> > V, string name){
     }
     fichier.close();
 }
-

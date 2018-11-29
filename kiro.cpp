@@ -74,9 +74,7 @@ vector<vector<node>> clustering(vector<node> nodes_d, vector<node> nodes_t, vect
     return data;
 }
 
-
-// Prend une distribution
-
+//C contient tout
 void easy_way(vector<vector<int>> &C, vector<node> distributions, vector<node> terminal){
     /*
     int n_terminal = terminal.size();
@@ -88,6 +86,19 @@ void easy_way(vector<vector<int>> &C, vector<node> distributions, vector<node> t
         if (i!=k) solution.push_back(C[i]);
         i++;
     }*/
+
+    for(int i=0;i<distributions.size();i++){
+        vector<int> d ;
+        d.push_back(distributions[i]);
+        for(int j=0;j<29;j++){
+            if(i*30 +j < terminal.size) d.push_back(terminal[i*30 +j]);
+        }
+        C.push_back(d);
+
+
+    }
+
+
 }
 
 
