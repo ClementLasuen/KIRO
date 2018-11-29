@@ -37,3 +37,27 @@ void change_one_node(vector<node> circuit, vector<node> nodes, vector<double> le
         }
     }
 }
+
+
+
+vector<int> clustering(vector<node> nodes, vector<double> distances) {
+    vector<node> clusters;
+    for (int i=0; i<nodes.size(); i++) {
+        if (nodes[i].is_terminal() == false) {
+            clusters.push_back(nodes[i]);
+        }
+    }
+    vector<int> index_clusters;
+    for (int i=0; i<nodes.size(); i++) {
+        int index = 0;
+        double min_distance = distance[nodes.size()*nodes[i].get_indice() + clusters[0].get_indice()];
+        for (int j=0; j<clusters.size(); j++) {
+            if (distances[nodes.size()*nodes[i].get_indice() + clusters[j].get_indice()] < min_distance) {
+                min_distance = distances[nodes.size()*nodes[i].get_indice() + clusters[j].get_indice();
+                index = j;
+            }
+        }
+        index_clusters.push_back(index);
+    }
+    return index_clusters;
+}

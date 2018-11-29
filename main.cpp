@@ -1,7 +1,5 @@
-#include <iostream>
 #include "read_write.h"
-
-using namespace std;
+#include "kiro.h"
 
 int main()
 {
