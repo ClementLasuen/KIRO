@@ -1,17 +1,29 @@
 #pragma once
 
+#include <math.h>
+#include <vector>
+using namespace std;
 
-
-
-class sommet{
+class node{
     double x,y;
-    bool type_sommet; // 0 si distribution, 1 si antenne
+    bool node_type; // 0 si distribution, 1 si antenne
     int indice;
 public :
     void set(double x1, double y1) {x=x1; y=y1;}
     double get_x() {return x;}
     double get_y() {return y;}
-    sommet (double x1, double y1, bool t, int i) { x=x1; y=y1; type_sommet =t; indice =i;}
+    node (double x1, double y1, bool t, int i) { x=x1; y=y1; node_type =t; indice =i;}
+    node () {}
+    int get_indice() {return indice;}
+};
 
+class arc{
+    node u,v;
+    double l;
+public :
+    double get_l() {return l;}
+    arc (node u1, node v1, double l1) {u=u1 ; v=v1; l =l1;}
 
 };
+
+double cost(vector<node> C, vector<double> lenght);
