@@ -57,39 +57,42 @@ int read_file(string distances_file, string nodes_file, vector<int> &D, vector<n
 
 
 // V est un chemin ou un circuit, cette fonction ecrit ligne par ligne
-void write(vector<vector<node> > V){
-    string file_name = string("resu.txt"); //+string<int>(nb_iterations)+string("_")+string<int>(h);
+void write(vector<vector<node> > V, string name){
+    string file_name = string("../")+name; //+string<int>(nb_iterations)+string("_")+string<int>(h);
     ofstream fichier(file_name.c_str(), ios::out|ios::trunc); // On va ecrire a la fin du fichier
     if (fichier){
         for(int i=0;i<V.size();i++){
             if(V[i].size() < 30){
                 fichier << "b";
                 for(int j=0;j<V[i].size();j++)
-                    fichier << V[i][j].get_indice() << " ";
+                    fichier << " " << V[i][j].get_indice();
+                fichier << endl;
             }
             else{
                 fichier << "b";
                 for(int j=0;j<30;j++)
-                    fichier << V[i][j].get_indice() << " ";
+                    fichier << " " << V[i][j].get_indice() ;
                 fichier << endl;
 
                 int k=30;
-                while(k+5 < V[i].size()){
+                while(k+4 < V[i].size()){
                     fichier << "c" ;
-                    for(int l=0;l<5;l++)
-                        fichier << V[i][k+l].get_indice() << " ";
+                    fichier<<" " << V[i][0].get_indice();
+                    for(int l=0;l<4;l++)
+                        fichier<< " " << V[i][k+l].get_indice() ;
                     fichier<< endl;
-                    k+=5;
+                    k+=4;
                 }
                 fichier << "c" ;
+                fichier<<" " << V[i][0].get_indice();
                 while(k<V[i].size()){
-                    fichier << V[i][k].get_indice() << " ";
+                    fichier << " "<< V[i][k].get_indice() ;
                     k++;
                 }
+                fichier << endl;
             }
         }
 
     }
     fichier.close();
 }
-
