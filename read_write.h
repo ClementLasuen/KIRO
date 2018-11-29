@@ -72,10 +72,18 @@ void write(vector<vector<node> > V){
                 fichier << "b";
                 for(int j=0;j<30;j++)   fichier << V[i][j];
                 fichier << endl;
-                fichier << c ;
+
                 int k=30;
                 while(k+5 < V[i].size()){
+                    fichier << "c" ;
                     for(int l=0;l<5;l++) fichier << V[i][k+l];
+                    fichier<< endl;
+                    k+=5;
+                }
+                fichier << "c" ;
+                while(k<V[i].size()){
+                    fichier << V[i][k];
+                    k++;
                 }
             }
         }
