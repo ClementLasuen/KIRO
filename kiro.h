@@ -13,3 +13,12 @@ public :
     double get_y() {return y;}
     node (double x1, double y1, bool t, int i) { x=x1; y=y1; node_type =t; indice =i;}
 };
+
+class arc{
+    node u,v;
+    double l;
+public :
+    double get_l() {return l;}
+    arc (node u1, node v1, double l1) {u=u1 ; v=v1; l =l1;}
+
+};
