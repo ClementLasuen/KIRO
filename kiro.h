@@ -5,6 +5,9 @@
 #include <math.h>
 #include <vector>
 #include <iostream>
+#include <random>
+
+
 using namespace std;
 
 class node{
@@ -36,3 +39,5 @@ double cost(vector<node> C, vector<double> lenght);
 
 // Assume that the first element is the distribution
 vector<node> change_one_node(vector<node> circuit, vector<node> nodes, vector<double> lenght);
+
+vector<vector<node> > clustering(vector<node> nodes_d, vector<node> nodes_t, vector<int> distances);

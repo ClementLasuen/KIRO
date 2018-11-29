@@ -9,7 +9,14 @@ bool node::is_in(vector<node> V){
 }
 
 
-double cost(vector<node> C, vector<double> lenght){
+double cost_solution(vector<vector<node> > C, vector<double> lenght){
+    double result =0.0;
+
+    for(int i=0;i<C.size();i++) result += cost1(C[i],lenght);
+    return result;
+}
+
+double cost1(vector<node> C, vector<double> lenght){
     double result =0;
     int n = sqrt(lenght.size());
     for(int i=1; i< C.size(); i++){
@@ -70,7 +77,6 @@ vector<vector<node>> clustering(vector<node> nodes_d, vector<node> nodes_t, vect
     for (int i=0; i<nodes_t.size(); i++) {
         data[index_clusters[i]].push_back(nodes_t[i]);
     }
-
     for (int i=0; i<nodes_d.size(); i++) {
         for (int j=0; j<data[i].size()-2; j++) {
             int distance_min = distances[n*data[i][j].get_indice() + data[i][j+1].get_indice()];
@@ -101,7 +107,17 @@ void easy_way(vector<vector<int>> &C, vector<node> distributions, vector<node> t
     while( k <30){
         if (i!=k) solution.push_back(C[i]);
         i++;
-    }*/
+    }
+    for(int i=0;i<distributions.size();i++){
+        vector<int> d ;
+        d.push_back(distributions[i]);
+        for(int j=0;j<29;j++){
+            if(i*30 +j < terminal.size) d.push_back(terminal[i*30 +j].get_indice());
+        }
+        C.push_back(d);
+    }
+*/
+
 }
 
 
@@ -126,3 +142,53 @@ void change_T(vector<node> &C, vector<node> nodes, vector<double> lenght){
         temperature(C,nodes,lenght, T0*beta );
     }
 }
+
+
+vector<int> echange(vector<vector<node>> &data, vector<node> distributions, vector<node> terminal){
+    vector<int> couple(2);
+    int c = 0;
+    int s = 0;
+    while (s<31){
+        c = rand()%distributions.size();
+        s = data[c].size();
+    }
+    int d = data[c].size()-30;
+    int i = rand()%(d-1) + 31;
+    int j = i;
+    while (i==j) j = rand()%(d-1) + 31;
+    node temp = data[c][i];
+    data[c][i] = data[c][j];
+    data[c][j] = temp;
+}
+
+void switch_chain(vector<vector<node> > &sol, vector<double> lenght){
+
+    vector<vector<node> > sol1 (sol);
+
+
+    for(int i=0; i<sol.size();i++){
+        if(sol[i].size()>30){
+
+
+            // Les chaines commencent à 30 + 4*j
+            int j=0;
+            while(30 +4*j+4 < sol[i].size()){
+
+                // trouver le plsu proche de sol[i][30+4*i]
+                for(int k=0;k<sol[i].size();k++){
+                    if(  lenght[ sol[i][k].get_indice()*n +  sol[i][30+4*i].get_indice()] <=
+                         lenght[sol[i][0].get_indice()*n +  sol[i][30+4*i].get_indice()]){
+                        node p (sol[i][0]);
+                        sol[i][0] = sol[i][k];
+                        sol[i][k] = p;
+                    }
+                }
+            }
+
+        }
+    }
+
+
+
+}
+
