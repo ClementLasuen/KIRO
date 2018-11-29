@@ -15,6 +15,8 @@ int main()
     int N = 1000000;
     int cnt = 0;
 
+    switch_chain(data,D);
+
     while(cnt<N){
         vector<int> couple(2);
         couple = echange_aleat(data,distribution, terminal);

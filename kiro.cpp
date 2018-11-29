@@ -9,7 +9,14 @@ bool node::is_in(vector<node> V){
 }
 
 
-double cost(vector<node> C, vector<double> lenght){
+double cost_solution(vector<vector<node> > C, vector<double> lenght){
+    double result =0.0;
+
+    for(int i=0;i<C.size();i++) result += cost1(C[i],lenght);
+    return result;
+}
+
+double cost1(vector<node> C, vector<double> lenght){
     double result =0;
     int n = sqrt(lenght.size());
     for(int i=1; i< C.size(); i++){
@@ -70,11 +77,26 @@ vector<vector<node>> clustering(vector<node> nodes_d, vector<node> nodes_t, vect
     for (int i=0; i<nodes_t.size(); i++) {
         data[index_clusters[i]].push_back(nodes_t[i]);
     }
+    for (int i=0; i<nodes_d.size(); i++) {
+        for (int j=0; j<data[i].size()-2; j++) {
+            int distance_min = distances[n*data[i][j].get_indice() + data[i][j+1].get_indice()];
+            int index = j+1;
+            for (int k=j+2; k<data[i].size()-1; k++) {
+                if (distances[n*data[i][j].get_indice() + data[i][k].get_indice()] < distance_min) {
+                    distance_min = distances[n*data[i][j].get_indice() + data[i][k].get_indice()];
+                    index = k;
+                }
+            }
+
+
+        }
+    }
 
     return data;
 }
 
-//C contient tout
+// Prend une distribution
+
 void easy_way(vector<vector<int>> &C, vector<node> distributions, vector<node> terminal){
     /*
     int n_terminal = terminal.size();
@@ -93,8 +115,6 @@ void easy_way(vector<vector<int>> &C, vector<node> distributions, vector<node> t
             if(i*30 +j < terminal.size) d.push_back(terminal[i*30 +j].get_indice());
         }
         C.push_back(d);
-
-
     }
 */
 
