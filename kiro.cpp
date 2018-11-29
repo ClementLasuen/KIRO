@@ -39,6 +39,41 @@ vector<node> change_one_node(vector<node> circuit, vector<node> nodes, vector<do
     return circuit2;
 }
 
+
+vector<vector<node>> clustering(vector<node> nodes_d, vector<node> nodes_t, vector<double> distances) {
+//    vector<node> clusters;
+//    for (int i=0; i<nodes.size(); i++) {
+//        if (nodes[i].is_terminal() == false) {
+//            clusters.push_back(nodes[i]);
+//        }
+//    }
+
+    int n = nodes_d.size() + nodes_t.size();
+
+    vector<int> index_clusters;
+    for (int i=0; i<nodes_t.size(); i++) {
+        int index = 0;
+        double min_distance = distances[n*nodes_t[i].get_indice() + nodes_d[0].get_indice()];
+        for (int j=0; j<nodes_d.size(); j++) {
+            if (distances[n*nodes_t[i].get_indice() + nodes_d[j].get_indice()] < min_distance) {
+                min_distance = distances[n*nodes_t[i].get_indice() + nodes_d[j].get_indice()];
+                index = j;
+            }
+        }
+        index_clusters.push_back(index);
+    }
+
+    vector<vector<node>> data(nodes_d.size());
+    for (int i=0; i<nodes_d.size(); i++) {
+        data[i].push_back(nodes_d[i]);
+    }
+    for (int i=0; i<nodes_t.size(), i++) {
+        data[index_clusters[i]].push_back(nodes_t[i]);
+    }
+
+    return data;
+
+
 // Prend une distribution
 
 void easy_way(vector<vector<int>> &C, vector<node> distributions, vector<node> terminal){
