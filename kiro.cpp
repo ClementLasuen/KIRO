@@ -23,14 +23,14 @@ double cost(vector<node> C, vector<double> lenght){
 //----------- Heuristique -------------------------------
 
 
-void change_one_node(vector<node> circuit, vector<node> nodes, vector<double> lenght){
+vector<node> change_one_node(vector<node> circuit, vector<node> nodes, vector<double> lenght, int i){
     double c = cost(circuit, lenght);
     srand(clock());
-    int i = rand()%circuit.size() +1;
+
     int j = rand()%nodes.size();
     int compteur=0;
     if(i < circuit.size()-1){
-        while( !nodes[j].is_in(circuit) && nodes[j].is_terminal() && cost(circuit,lenght)>= c && compteur<100){
+        while( !nodes[j].is_in(circuit) && nodes[j].is_terminal() && compteur<100){
             circuit[i] = nodes[j];
             j = rand()%nodes.size();
             compteur++;
@@ -39,25 +39,76 @@ void change_one_node(vector<node> circuit, vector<node> nodes, vector<double> le
 }
 
 
+vector<vector<node>> clustering(vector<node> nodes_d, vector<node> nodes_t, vector<double> distances) {
+//    vector<node> clusters;
+//    for (int i=0; i<nodes.size(); i++) {
+//        if (nodes[i].is_terminal() == false) {
+//            clusters.push_back(nodes[i]);
+//        }
+//    }
 
-vector<int> clustering(vector<node> nodes, vector<double> distances) {
-    vector<node> clusters;
-    for (int i=0; i<nodes.size(); i++) {
-        if (nodes[i].is_terminal() == false) {
-            clusters.push_back(nodes[i]);
-        }
-    }
+    int n = nodes_d.size() + nodes_t.size();
+
     vector<int> index_clusters;
-    for (int i=0; i<nodes.size(); i++) {
+    for (int i=0; i<nodes_t.size(); i++) {
         int index = 0;
-        double min_distance = distance[nodes.size()*nodes[i].get_indice() + clusters[0].get_indice()];
-        for (int j=0; j<clusters.size(); j++) {
-            if (distances[nodes.size()*nodes[i].get_indice() + clusters[j].get_indice()] < min_distance) {
-                min_distance = distances[nodes.size()*nodes[i].get_indice() + clusters[j].get_indice();
+        double min_distance = distances[n*nodes_t[i].get_indice() + nodes_d[0].get_indice()];
+        for (int j=0; j<nodes_d.size(); j++) {
+            if (distances[n*nodes_t[i].get_indice() + nodes_d[j].get_indice()] < min_distance) {
+                min_distance = distances[n*nodes_t[i].get_indice() + nodes_d[j].get_indice()];
                 index = j;
             }
         }
         index_clusters.push_back(index);
     }
-    return index_clusters;
+
+    vector<vector<node>> data(nodes_d.size());
+    for (int i=0; i<nodes_d.size(); i++) {
+        data[i].push_back(nodes_d[i]);
+    }
+    for (int i=0; i<nodes_t.size(), i++) {
+        data[index_clusters[i]].push_back(nodes_t[i]);
+    }
+
+    return data;
+
+
+// Prend une distribution
+
+void easy_way(vector<node> C, vector<double> lenght , vector<node> &solution, bool hugo = false){
+    int k =0;
+    while( C[k].is_terminal() || C[k].is_in(solution)) k+=1;
+    solution.push_back(C[k]);
+    int i=0;
+    while( k <30){
+        if (i!=k) solution.push_back(C[i]);
+        i++;
+    }
+}
+
+
+
+
+
+
+
+// tEMPERAYITR
+
+void temperature(vector<node> &C, vector<node> nodes, vector<double> lenght, double T){
+
+    vector<node> new_circuit = change_one_node(circuit, nodes, lenght);
+
+    double p = (rand()%100)/100;
+    if(p<= min(1, exp(cost(C,lenght)-cost(new_circuit,lenght)))){
+        C = new_circuit;
+    }
+}
+
+void change_T(vector<node> &C, vector<node> nodes, vector<double> lenght){
+    double beta = 0.9;
+    double T0 = 10000;
+    for(int k=0;k<1000;k++){
+        beta*=beta;
+        temperature(C,nodes,lenght, T0*beta );
+    }
 }
