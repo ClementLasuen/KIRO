@@ -63,32 +63,32 @@ void write(vector<vector<node> > V, string name){
     if (fichier){
         for(int i=0;i<V.size();i++){
             if(V[i].size() < 30){
-                fichier << "b ";
-                for(int j=0;j<V[i].size()-1;j++)
-                    fichier << V[i][j].get_indice() << " ";
-                fichier << V[i][V[i].size()-1].get_indice();
+                fichier << "b";
+                for(int j=0;j<V[i].size();j++)
+                    fichier << " " << V[i][j].get_indice();
                 fichier << endl;
             }
             else{
-                fichier << "b ";
+                fichier << "b";
                 for(int j=0;j<30;j++)
-                    fichier << V[i][j].get_indice() << " ";
+                    fichier << " " << V[i][j].get_indice() ;
                 fichier << endl;
 
                 int k=30;
-                while(k+5 < V[i].size()){
-                    fichier << "c " ;
-                    for(int l=0;l<5;l++)
-                        fichier << V[i][k+l].get_indice() << " ";
+                while(k+4 < V[i].size()){
+                    fichier << "c" ;
+                    fichier<<" " << V[i][0].get_indice();
+                    for(int l=0;l<4;l++)
+                        fichier<< " " << V[i][k+l].get_indice() ;
                     fichier<< endl;
-                    k+=5;
+                    k+=4;
                 }
-                fichier << "c " ;
-                while(k<V[i].size()-1){
-                    fichier << V[i][k].get_indice() << " ";
+                fichier << "c" ;
+                fichier<<" " << V[i][0].get_indice();
+                while(k<V[i].size()){
+                    fichier << " "<< V[i][k].get_indice() ;
                     k++;
                 }
-                fichier << V[i][V[i].size()-1].get_indice();
                 fichier << endl;
             }
         }
