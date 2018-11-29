@@ -9,7 +9,14 @@ bool node::is_in(vector<node> V){
 }
 
 
-double cost(vector<node> C, vector<double> lenght){
+double cost_solution(vector<vector<node> > C, vector<double> lenght){
+    double result =0.0;
+
+    for(int i=0;i<C.size();i++) result += cost1(C[i],lenght);
+    return result;
+}
+
+double cost1(vector<node> C, vector<double> lenght){
     double result =0;
     int n = sqrt(lenght.size());
     for(int i=1; i< C.size(); i++){
@@ -84,8 +91,6 @@ void easy_way(vector<vector<int>> &C, vector<node> distributions, vector<node> t
             if(i*30 +j < terminal.size) d.push_back(terminal[i*30 +j].get_indice());
         }
         C.push_back(d);
-
-
     }
 
 
