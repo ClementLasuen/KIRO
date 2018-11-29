@@ -85,7 +85,7 @@ void easy_way(vector<vector<int>> &C, vector<node> distributions, vector<node> t
     while( k <30){
         if (i!=k) solution.push_back(C[i]);
         i++;
-    }*/
+    }
 
     for(int i=0;i<distributions.size();i++){
         vector<int> d ;
@@ -97,7 +97,7 @@ void easy_way(vector<vector<int>> &C, vector<node> distributions, vector<node> t
 
 
     }
-
+*/
 
 }
 
@@ -122,4 +122,22 @@ void change_T(vector<node> &C, vector<node> nodes, vector<double> lenght){
         beta*=beta;
         temperature(C,nodes,lenght, T0*beta );
     }
+}
+
+
+vector<int> echange(vector<vector<node>> &data, vector<node> distributions, vector<node> terminal){
+    vector<int> couple(2);
+    int c = 0;
+    int s = 0;
+    while (s<31){
+        c = rand()%distributions.size();
+        s = data[c].size();
+    }
+    int d = data[c].size()-30;
+    int i = rand()%(d-1) + 31;
+    int j = i;
+    while (i==j) j = rand()%(d-1) + 31;
+    node temp = data[c][i];
+    data[c][i] = data[c][j];
+    data[c][j] = temp;
 }
