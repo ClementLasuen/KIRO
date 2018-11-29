@@ -64,34 +64,32 @@ void write(vector<vector<node> > V){
         for(int i=0;i<V.size();i++){
             if(V[i].size() < 30){
                 fichier << "b";
-                for(int j=0;j<V[i].size();j++)   fichier << V[i][j];
-
-
+                for(int j=0;j<V[i].size();j++)
+                    fichier << V[i][j].get_indice() << " ";
             }
             else{
                 fichier << "b";
-                for(int j=0;j<30;j++)   fichier << V[i][j];
+                for(int j=0;j<30;j++)
+                    fichier << V[i][j].get_indice() << " ";
                 fichier << endl;
 
                 int k=30;
                 while(k+5 < V[i].size()){
                     fichier << "c" ;
-                    for(int l=0;l<5;l++) fichier << V[i][k+l];
+                    for(int l=0;l<5;l++)
+                        fichier << V[i][k+l].get_indice() << " ";
                     fichier<< endl;
                     k+=5;
                 }
                 fichier << "c" ;
                 while(k<V[i].size()){
-                    fichier << V[i][k];
+                    fichier << V[i][k].get_indice() << " ";
                     k++;
                 }
             }
         }
 
-
-
-
-        }
-
+    }
+    fichier.close();
 }
 

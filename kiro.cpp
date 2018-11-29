@@ -26,45 +26,44 @@ double cost(vector<node> C, vector<double> lenght){
 vector<node> change_one_node(vector<node> circuit, vector<node> nodes, vector<double> lenght, int i){
     double c = cost(circuit, lenght);
     srand(clock());
-
+    vector<node> circuit2(circuit);
     int j = rand()%nodes.size();
     int compteur=0;
     if(i < circuit.size()-1){
-        while( !nodes[j].is_in(circuit) && nodes[j].is_terminal() && compteur<100){
-            circuit[i] = nodes[j];
+        while( !nodes[j].is_in(circuit2) && nodes[j].is_terminal() && compteur<100){
+            circuit2[i] = nodes[j];
             j = rand()%nodes.size();
             compteur++;
         }
     }
+    return circuit2;
 }
 
 // Prend une distribution
 
-void easy_way(vector<node> C, vector<double> lenght , vector<node> &solution, bool hugo = false){
-    int k =0;
+void easy_way(vector<vector<int>> &C, vector<node> distributions, vector<node> terminal){
+    /*
+    int n_terminal = terminal.size();
+    int n_distributions = distributions.size();
     while( C[k].is_terminal() || C[k].is_in(solution)) k+=1;
     solution.push_back(C[k]);
     int i=0;
     while( k <30){
         if (i!=k) solution.push_back(C[i]);
         i++;
-    }
+    }*/
 }
-
-
-
-
-
 
 
 // tEMPERAYITR
 
 void temperature(vector<node> &C, vector<node> nodes, vector<double> lenght, double T){
 
-    vector<node> new_circuit = change_one_node(circuit, nodes, lenght);
+    int i =rand()%C.size();
+    vector<node> new_circuit = change_one_node(C, nodes, lenght,i);
 
     double p = (rand()%100)/100;
-    if(p<= min(1, exp(cost(C,lenght)-cost(new_circuit,lenght)))){
+    if(p<= min(1.0, exp(cost(C,lenght)-cost(new_circuit,lenght)))){
         C = new_circuit;
     }
 }

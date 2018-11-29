@@ -34,4 +34,4 @@ double cost(vector<node> C, vector<double> lenght);
 
 
 // Assume that the first element is the distribution
-void change_one_node(vector<node> circuit, vector<node> nodes, vector<double> lenght);
+vector<node> change_one_node(vector<node> circuit, vector<node> nodes, vector<double> lenght);
