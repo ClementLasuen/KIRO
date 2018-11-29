@@ -25,6 +25,7 @@ double cost(vector<node> C, vector<double> lenght){
 
 void change_one_node(vector<node> circuit, vector<node> nodes, vector<double> lenght){
     double c = cost(circuit, lenght);
+    srand(clock());
     int i = rand()%circuit.size() +1;
     int j = rand()%nodes.size();
     int compteur=0;
