@@ -51,3 +51,19 @@ int read_file(string distances_file, string nodes_file, vector<int> D, vector<no
     }
     else cout << "pb ouverture" << endl;
 }
+
+
+
+// V est un chemin ou un circuit, cette fonction ecrit ligne par ligne
+void write(vector<node> V){
+    string file_name = string("resu.txt"); //+string<int>(nb_iterations)+string("_")+string<int>(h);
+    ofstream fichier(file_name.c_str(), ios::out|ios::trunc); // On va ecrire a la fin du fichier
+    if (fichier){
+
+        if(V[0].is_terminal()) fichier << c;
+        else fichier << b;
+        for(int i=0; i<V.size();i++) fichier << V[i].get_indice() << endl;
+
+        fichier << endl;
+        }
+}

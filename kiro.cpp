@@ -35,6 +35,5 @@ void change_one_node(vector<node> circuit, vector<node> nodes, vector<double> le
             j = rand()%nodes.size();
             compteur++;
         }
-
     }
 }
