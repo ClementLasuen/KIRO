@@ -23,10 +23,10 @@ double cost(vector<node> C, vector<double> lenght){
 //----------- Heuristique -------------------------------
 
 
-void change_one_node(vector<node> circuit, vector<node> nodes, vector<double> lenght){
+vector<node> change_one_node(vector<node> circuit, vector<node> nodes, vector<double> lenght, int i){
     double c = cost(circuit, lenght);
     srand(clock());
-    int i = rand()%circuit.size() +1;
+
     int j = rand()%nodes.size();
     int compteur=0;
     if(i < circuit.size()-1){
@@ -36,4 +36,26 @@ void change_one_node(vector<node> circuit, vector<node> nodes, vector<double> le
             compteur++;
         }
     }
+}
+
+// tEMPERAYITR
+
+void temperature(vector<node> &C, vector<node> nodes, vector<double> lenght, double T){
+
+    vector<node> new_circuit = change_one_node(circuit, nodes, lenght);
+
+    double p = (rand()%100)/100;
+    if(p<= min(1, exp(cost(C,lenght)-cost(new_circuit,lenght)))){
+        C = new_circuit;
+    }
+}
+
+void change_T(vector<node> &C, vector<node> nodes, vector<double> lenght){
+    double beta = 0.9;
+    double T0 = 10000;
+    for(int k=0;k<1000;k++){
+        beta*=beta;
+        temperature(C,nodes,lenght, T0*beta );
+    }
+
 }

@@ -8,8 +8,9 @@
 using namespace std;
 
 // return n le nombre de nodes
+
 int read_file(string distances_file, string nodes_file, vector<int> D, vector<node> distribution, vector<node> terminal){
-    ifstream distances(string("../KIRO/Data/")+distances_file);
+    ifstream distances(string("../KIRO/Data/"+distances_file));
     ifstream nodes(string("../KIRO/Data/")+nodes_file);
     if(distances && nodes){
         int test = 0;
@@ -60,8 +61,8 @@ void write(vector<node> V){
     ofstream fichier(file_name.c_str(), ios::out|ios::trunc); // On va ecrire a la fin du fichier
     if (fichier){
 
-        if(V[0].is_terminal()) fichier << c;
-        else fichier << b;
+        if(V[0].is_terminal()) fichier << "c";
+        else fichier << "b";
         for(int i=0; i<V.size();i++) fichier << V[i].get_indice() << endl;
 
         fichier << endl;
