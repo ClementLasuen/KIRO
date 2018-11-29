@@ -9,7 +9,8 @@ int main()
     vector<node> distribution;
     vector<node> terminal;
 
-    //read_file(string("grenoble/distances.csv"),string("grenoble/nodes.csv"), D, distribution, terminal);
+    int n = read_file(string("grenoble/distances.csv"),string("grenoble/nodes0.csv"), D, distribution, terminal);
 
+    cout << n << endl;
     return 0;
 }
