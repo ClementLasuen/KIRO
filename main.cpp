@@ -17,6 +17,8 @@ int main()
 
     switch_chain(data,D);
 
+    int c = cost_so
+
     while(cnt<N){
         vector<int> couple(2);
         couple = echange_aleat(data,distribution, terminal);

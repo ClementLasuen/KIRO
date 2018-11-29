@@ -40,12 +40,10 @@ double cost(vector<node> C, vector<double> lenght);
 // Assume that the first element is the distribution
 vector<node> change_one_node(vector<node> circuit, vector<node> nodes, vector<double> lenght);
 
-<<<<<<< HEAD
 vector<vector<node>> clustering(vector<node> nodes_d, vector<node> nodes_t, vector<int> distances);
 
 void echange(vector<node> C, int i, int j);
 
 vector<int> echange_aleat(vector<vector<node>> &data, vector<node> distributions, vector<node> terminal);
-=======
+
 vector<vector<node> > clustering(vector<node> nodes_d, vector<node> nodes_t, vector<int> distances);
->>>>>>> b6d8195baa3fe77fec4e223d858372cdc0b8e4b6
