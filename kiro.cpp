@@ -123,8 +123,13 @@ void change_T(vector<node> &C, vector<node> nodes, vector<double> lenght){
     }
 }
 
+void echange(vector<node> C, int i, int j){
+    node temp = C[i];
+    C[i] = C[j];
+    C[j] = temp;
+}
 
-vector<int> echange(vector<vector<node>> &data, vector<node> distributions, vector<node> terminal){
+vector<int> echange_aleat(vector<vector<node>> &data, vector<node> distributions, vector<node> terminal){
     vector<int> couple(2);
     int c = 0;
     int s = 0;
@@ -136,9 +141,10 @@ vector<int> echange(vector<vector<node>> &data, vector<node> distributions, vect
     int i = rand()%(d-1) + 31;
     int j = i;
     while (i==j) j = rand()%(d-1) + 31;
-    node temp = data[c][i];
-    data[c][i] = data[c][j];
-    data[c][j] = temp;
+    echange(data[c],i,j);
+    couple[0] = i;
+    couple[1] = j;
+    return(couple);
 }
 
 void switch_chain(vector<vector<node> > &sol, vector<double> lenght){

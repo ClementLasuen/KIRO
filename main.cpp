@@ -12,7 +12,14 @@ int main()
 
     vector<vector<node>> data = clustering(distribution, terminal, D);
 
+    int N = 1000000;
+    int cnt = 0;
 
+    while(cnt<N){
+        vector<int> couple(2);
+        couple = echange_aleat(data,distribution, terminal);
+
+    }
 
     write(data, string("resu_nice.txt"));
 

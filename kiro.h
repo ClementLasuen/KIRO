@@ -41,3 +41,7 @@ double cost(vector<node> C, vector<double> lenght);
 vector<node> change_one_node(vector<node> circuit, vector<node> nodes, vector<double> lenght);
 
 vector<vector<node>> clustering(vector<node> nodes_d, vector<node> nodes_t, vector<int> distances);
+
+void echange(vector<node> C, int i, int j);
+
+vector<int> echange_aleat(vector<vector<node>> &data, vector<node> distributions, vector<node> terminal);
