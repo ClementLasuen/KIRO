@@ -147,14 +147,15 @@ void change_T(vector<node> &C, vector<node> nodes, vector<double> lenght){
 }
 */
 
-void echange(vector<node> C, int i, int j){
-    node temp = C[i];
-    C[i] = C[j];
-    C[j] = temp;
+void echange(vector<node> &C, int i, int j){
+    node temp(C[i].get_x(),C[i].get_y(), C[i].get_node_type(),C[i].get_indice());
+    C[i].set(C[j].get_x(), C[j].get_y());
+    C[i].set_indice(C[j].get_indice());
+    C[j].set(temp.get_x(), temp.get_y());
+    C[j].set_indice(temp.get_indice());
 }
 
-vector<int> echange_aleat(vector<vector<node>> &data, vector<node> distributions, vector<node> terminal){
-    vector<int> couple(2);
+void echange_aleat(vector<vector<node>> &data, vector<node> distributions, vector<node> terminal){
     int c = 0;
     int s = 0;
     while (s<31){
@@ -164,11 +165,9 @@ vector<int> echange_aleat(vector<vector<node>> &data, vector<node> distributions
     int d = data[c].size()-30;
     int i = rand()%(d-1) + 31;
     int j = i;
-    while (i==j) j = rand()%(d-1) + 31;
+    while (i==j)
+        j = rand()%(d-1) + 31;
     echange(data[c],i,j);
-    couple[0] = i;
-    couple[1] = j;
-    return(couple);
 }
 
 void switch_chain(vector<vector<node> > &sol, vector<int> lenght){
