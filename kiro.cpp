@@ -86,12 +86,11 @@ void easy_way(vector<vector<int>> &C, vector<node> distributions, vector<node> t
         if (i!=k) solution.push_back(C[i]);
         i++;
     }
-
     for(int i=0;i<distributions.size();i++){
         vector<int> d ;
         d.push_back(distributions[i]);
         for(int j=0;j<29;j++){
-            if(i*30 +j < terminal.size) d.push_back(terminal[i*30 +j]);
+            if(i*30 +j < terminal.size) d.push_back(terminal[i*30 +j].get_indice());
         }
         C.push_back(d);
 
@@ -141,3 +140,35 @@ vector<int> echange(vector<vector<node>> &data, vector<node> distributions, vect
     data[c][i] = data[c][j];
     data[c][j] = temp;
 }
+
+void switch_chain(vector<vector<node> > &sol, vector<double> lenght){
+
+    vector<vector<node> > sol1 (sol);
+
+
+    for(int i=0; i<sol.size();i++){
+        if(sol[i].size()>30){
+
+
+            // Les chaines commencent à 30 + 4*j
+            int j=0;
+            while(30 +4*j+4 < sol[i].size()){
+
+                // trouver le plsu proche de sol[i][30+4*i]
+                for(int k=0;k<sol[i].size();k++){
+                    if(  lenght[ sol[i][k].get_indice()*n +  sol[i][30+4*i].get_indice()] <=
+                         lenght[sol[i][0].get_indice()*n +  sol[i][30+4*i].get_indice()]){
+                        node p (sol[i][0]);
+                        sol[i][0] = sol[i][k];
+                        sol[i][k] = p;
+                    }
+                }
+            }
+
+        }
+    }
+
+
+
+}
+
