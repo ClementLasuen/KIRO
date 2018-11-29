@@ -8,9 +8,11 @@
 using namespace std;
 
 // return n le nombre de nodes
-int read_file(string distances_file, string nodes_file, vector<int> D, vector<node> distribution, vector<node> terminal){
-    ifstream distances(string("../KIRO/Data/")+distances_file);
-    ifstream nodes(string("../KIRO/Data/")+nodes_file);
+int read_file(string distances_file, string nodes_file, vector<int> &D, vector<node> &distribution, vector<node> &terminal){
+    string path_distance = string("../Data/")+distances_file;
+    string path_nodes = string("../Data/")+nodes_file;
+    ifstream distances(path_distance);
+    ifstream nodes(path_nodes);
     if(distances && nodes){
         int test = 0;
         int n=0;
@@ -21,21 +23,21 @@ int read_file(string distances_file, string nodes_file, vector<int> D, vector<no
             n++;
             if (d_==0) test++;
         }
-        n--;
-        for(int i=0; i<n*n-n-1;i++){
+        n-=2;
+        for(int i=0; i<n*n-n-2;i++){
             int d_;
             distances >> d_;
             D.push_back(d_);
         }
+        string contenu_;
+        getline(nodes,contenu_);
         for(int i=0;i<n;i++){
-            string contenu;
-            getline(nodes,contenu);
             double x;
             double y;
             string type;
-            scanf(contenu,"%d %d %s", x, y, type);
+            nodes >> x >> y >> type;
             bool t = false;
-            if(contenu==string("terminal")) t = true;
+            if(type==string("terminal")) t = true;
             if (t){
                 node N(x,y,t,i);
                 terminal.push_back(N);
@@ -49,5 +51,5 @@ int read_file(string distances_file, string nodes_file, vector<int> D, vector<no
         nodes.close();
         return(n);
     }
-    else cout << "pb ouverture" << endl;
+    else cerr << "pb ouverture" << endl;
 }
