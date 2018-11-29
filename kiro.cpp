@@ -9,15 +9,15 @@ bool node::is_in(vector<node> V){
 }
 
 
-double cost_solution(vector<vector<node> > C, vector<double> lenght){
-    double result =0.0;
+int cost_solution(vector<vector<node> > C, vector<int> lenght){
+    int result =0;
 
-    for(int i=0;i<C.size();i++) result += cost1(C[i],lenght);
+    for(int i=0;i<C.size();i++) result += cost(C[i],lenght);
     return result;
 }
 
-double cost1(vector<node> C, vector<double> lenght){
-    double result =0;
+int cost(vector<node> C, vector<int> lenght){
+    int result =0;
     int n = sqrt(lenght.size());
     for(int i=1; i< C.size(); i++){
         result += lenght[ C[i].get_indice()*n + C[i-1].get_indice() ];
@@ -30,8 +30,8 @@ double cost1(vector<node> C, vector<double> lenght){
 //----------- Heuristique -------------------------------
 
 
-vector<node> change_one_node(vector<node> circuit, vector<node> nodes, vector<double> lenght, int i){
-    double c = cost(circuit, lenght);
+vector<node> change_one_node(vector<node> circuit, vector<node> nodes, vector<int> lenght, int i){
+    int c = cost(circuit, lenght);
     srand(clock());
     vector<node> circuit2(circuit);
     int j = rand()%nodes.size();
@@ -87,7 +87,8 @@ vector<vector<node>> clustering(vector<node> nodes_d, vector<node> nodes_t, vect
                     index = k;
                 }
             }
-
+            data[i].insert(data[i].begin()+ j+1, data[i][index]);
+            data[i].erase(data[i].begin()+index+1);
 
         }
     }
@@ -123,6 +124,7 @@ void easy_way(vector<vector<int>> &C, vector<node> distributions, vector<node> t
 
 // tEMPERAYITR
 
+/*
 void temperature(vector<node> &C, vector<node> nodes, vector<double> lenght, double T){
 
     int i =rand()%C.size();
@@ -134,6 +136,7 @@ void temperature(vector<node> &C, vector<node> nodes, vector<double> lenght, dou
     }
 }
 
+
 void change_T(vector<node> &C, vector<node> nodes, vector<double> lenght){
     double beta = 0.9;
     double T0 = 10000;
@@ -142,6 +145,7 @@ void change_T(vector<node> &C, vector<node> nodes, vector<double> lenght){
         temperature(C,nodes,lenght, T0*beta );
     }
 }
+*/
 
 void echange(vector<node> C, int i, int j){
     node temp = C[i];
@@ -167,33 +171,33 @@ vector<int> echange_aleat(vector<vector<node>> &data, vector<node> distributions
     return(couple);
 }
 
-void switch_chain(vector<vector<node> > &sol, vector<double> lenght){
+void switch_chain(vector<vector<node> > &sol, vector<int> lenght){
 
     vector<vector<node> > sol1 (sol);
 
-
+    int n = sqrt(lenght.size());
     for(int i=0; i<sol.size();i++){
         if(sol[i].size()>30){
 
 
             // Les chaines commencent à 30 + 4*j
-            int j=0;
-            while(30 +4*j+4 < sol[i].size()){
+            int j=30;
+            while(j+4 < sol[i].size()){
 
                 // trouver le plsu proche de sol[i][30+4*i]
                 for(int k=0;k<sol[i].size();k++){
-                    if(  lenght[ sol[i][k].get_indice()*n +  sol[i][30+4*i].get_indice()] <=
-                         lenght[sol[i][0].get_indice()*n +  sol[i][30+4*i].get_indice()]){
+                    if(  lenght[ sol[i][k].get_indice()*n +  sol[i][j].get_indice()] <=
+                         lenght[sol[i][0].get_indice()*n +  sol[i][j].get_indice()]){
                         node p (sol[i][0]);
                         sol[i][0] = sol[i][k];
                         sol[i][k] = p;
                     }
                 }
+                j+=4;
             }
 
         }
     }
-
 
 
 }

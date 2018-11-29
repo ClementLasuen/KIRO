@@ -8,25 +8,32 @@ int main()
     vector<node> distribution;
     vector<node> terminal;
 
-    int n = read_file(string("nice/distances.csv"),string("nice/nodes0.csv"), D, distribution, terminal);
+    int n = read_file(string("pim/distances.csv"),string("pim/nodes0.csv"), D, distribution, terminal);
 
     vector<vector<node>> data = clustering(distribution, terminal, D);
 
-    int N = 1000000;
+    int N = 1000;
     int cnt = 0;
 
     switch_chain(data,D);
 
-    int c = cost_so
 
+    int c = cost_solution( data, D);
+    /*int c_test;
     while(cnt<N){
+        vector<vector<node>> data_test = data;
         vector<int> couple(2);
-        couple = echange_aleat(data,distribution, terminal);
-
+        couple = echange_aleat(data_test,distribution, terminal);
+        c_test = cost_solution(data_test, D);
+        if (c_test< c) {
+            data = data_test;
+            c = c_test;
+        }
+        cnt+=1;
     }
+    */
+    write(data, string("resu_pim.txt"));
 
-    write(data, string("resu_nice.txt"));
-
-    cout << n << endl;
+    cout << c << endl;
     return 0;
 }
