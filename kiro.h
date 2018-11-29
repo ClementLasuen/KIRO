@@ -1,7 +1,8 @@
 #pragma once
 
-
-
+#include <math.h>
+#include <vector>
+using namespace std;
 
 class node{
     double x,y;
@@ -13,6 +14,7 @@ public :
     double get_y() {return y;}
     node (double x1, double y1, bool t, int i) { x=x1; y=y1; node_type =t; indice =i;}
     node () {}
+    int get_indice() {return indice;}
 };
 
 class arc{
@@ -23,3 +25,5 @@ public :
     arc (node u1, node v1, double l1) {u=u1 ; v=v1; l =l1;}
 
 };
+
+double cost(vector<node> C, vector<double> lenght);
