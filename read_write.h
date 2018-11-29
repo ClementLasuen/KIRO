@@ -29,8 +29,6 @@ int read_file(string distances_file, string nodes_file, vector<int> &D, vector<n
             distances >> d_;
             D.push_back(d_);
         }
-        string contenu_;
-        getline(nodes,contenu_);
         for(int i=0;i<n;i++){
             double x;
             double y;
