@@ -19,10 +19,42 @@ int cost_solution(vector<vector<node> > C, vector<int> lenght){
 int cost(vector<node> C, vector<int> lenght){
     int result =0;
     int n = sqrt(lenght.size());
-    for(int i=1; i< C.size(); i++){
+
+    // COUT DE LA BOUCLE PRINCIPALE
+
+    for(int i=1; i< min(C.size(), 30) ; i++)  result += lenght[ C[i].get_indice() + C[i-1].get_indice()*n ];
+    if(C.size() >= 30) result += lenght[ C[29].get_indice()*n + C[0].get_indice()];
+
+    // COUT DES BRANCHES ASSOCIEES
+    // ELLES COMMENTCENT TOUTES A LA DISTRIBUTION
+
+    int k=30;
+
+
+    while(k+4< C.size()){
+
+        // ON PART DE LA DISTRIBUTION
+        result += lenght[ C[0].get_indice()*n + C[k].get_indice()];
+        for(int i =0;i<3;i++)
+        {
+            result += lenght[ C[k+i].get_indice()*n + C[k+i+1].get_indice()];
+        }
+
+        k += 4;
+    }
+
+    while(k+1<C.size()){
+        result += lenght[ C[k].get_indice()*n + C[k+1].get_indice()];
+        k++;
+    }
+
+
+    /*for(int i=1; i< C.size(); i++){
         result += lenght[ C[i].get_indice() + C[i-1].get_indice()*n ];
     }
-    result += lenght[ C[C.size()].get_indice()*n + C[0].get_indice()];
+    if(C.size() > 5) result += lenght[ C[C.size()].get_indice()*n + C[0].get_indice()];
+    */
+
 
     return result;
 }
