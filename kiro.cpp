@@ -208,10 +208,11 @@ void echange_aleat(vector<vector<vector<node>>> &data, vector<node> distribution
                 int indice = data[n_distrib][n1][i1].get_indice();
                 auto it = encrage_chaine.find(indice);
                 if (it!=encrage_chaine.end()){
-                    encrage_chaine[data[n_distrib][n2][i2].get_indice()] = *it;
-                    for(int i = 0; i<it->size(); i++){
-                        data[(*it)[i][0]][(*it)[i][1]][0] = data[n_distrib][n2][i2][0];
+                    encrage_chaine[data[n_distrib][n2][i2].get_indice()] = it->second;
+                    for(int i = 0; i<it->second.size(); i++){
+                        data[it->second[i][0]][it->second[i][1]][0] = data[n_distrib][n2][i2];
                         encrage_chaine.erase(indice);
+                        echange(data[n_distrib],n1,n2,i1,i2);
                     }
                 }
             }

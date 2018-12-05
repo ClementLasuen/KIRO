@@ -46,9 +46,9 @@ vector<node> change_one_node(vector<node> circuit, vector<node> nodes, vector<do
 
 vector<vector<node>> clustering(vector<node> nodes_d, vector<node> nodes_t, vector<int> distances);
 
-void echange(vector<node> &C, int i, int j);
+void echange(vector<vector<node>> &C, int n1, int n2, int i1, int i2);
 
-void echange_aleat(vector<vector<node>> &data, vector<node> distributions, vector<node> terminal);
+void echange_aleat(vector<vector<vector<node>>> &data, vector<node> distributions, vector<node> terminal);
 
 vector<vector<node> > clustering(vector<node> nodes_d, vector<node> nodes_t, vector<int> distances);
 
