@@ -7,6 +7,7 @@
 #include <iostream>
 #include <random>
 #include <map>
+#include <set>
 
 
 using namespace std;
@@ -44,12 +45,12 @@ int cost_solution(vector<vector<node> > C, vector<int> lenght);
 // Assume that the first element is the distribution
 vector<node> change_one_node(vector<node> circuit, vector<node> nodes, vector<double> lenght);
 
-vector<vector<node>> clustering(vector<node> nodes_d, vector<node> nodes_t, vector<int> distances);
-
 void echange(vector<vector<node>> &C, int n1, int n2, int i1, int i2);
 
 void echange_aleat(vector<vector<vector<node>>> &data, vector<node> distributions, vector<node> terminal);
 
 vector<vector<vector<node>>> clustering(vector<node> nodes_d, vector<node> nodes_t, vector<int> distances);
+
+vector<vector<vector<node>>> heuristic_loop(vector<vector<node>> data, int n, vector<int> distances);
 
 void switch_chain(vector<vector<node> > &sol, vector<int> lenght);

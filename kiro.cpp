@@ -95,7 +95,7 @@ vector<vector<vector<node>>> clustering(vector<node> nodes_d, vector<node> nodes
         for (int j=0; j<data[i].size()-1; j++) {
             int distance_min = distances[n*data[i][j].get_indice() + data[i][j+1].get_indice()];
             int index = j+1;
-            for (int k=j+2; k<data[i].size()-1; k++) {
+            for (int k=j+2; k<data[i].size(); k++) {
                 if (distances[n*data[i][j].get_indice() + data[i][k].get_indice()] < distance_min) {
                     distance_min = distances[n*data[i][j].get_indice() + data[i][k].get_indice()];
                     index = k;
@@ -140,7 +140,7 @@ vector<vector<vector<node>>> clustering(vector<node> nodes_d, vector<node> nodes
                     data_new[i].push_back(new_chain);
                 }
 
-                // Sinon, on regarde le cout pour passer du dernier node de la derniere chaine au point que l'on considere (cost1)
+                // Sinon, on regarde le cout pour passer du dernier noeud de la derniere chaine au point que l'on considere (cost1)
                 // On compare au cout en creant une nouvelle chaine avec un point de la boucle et ce point (cost2)
                 // On effectue l'action de plus petit cout
                 else {
@@ -149,7 +149,7 @@ vector<vector<vector<node>>> clustering(vector<node> nodes_d, vector<node> nodes
                     int cost1 = distances[n*data_new[i][data_new[i].size()-1][data_new[i][data_new[i].size()-1].size()-1].get_indice() + data[i][j].get_indice()];
 
                     // Calcul du cout 2
-                    int cost2 = distances[n*data_new[i][0][0].get_indice() + data[i][j]];
+                    int cost2 = distances[n*data_new[i][0][0].get_indice() + data[i][j].get_indice()];
                     int index = 0;
                     for (int k=1; k<data_new[i][0].size(); k++) {
                         if (distances[n*data_new[i][0][k].get_indice() + data[i][j].get_indice()] < cost2) {
@@ -338,5 +338,164 @@ void switch_chain(vector<vector<node> > &sol, vector<int> lenght){
     }
 
 
+}
+
+
+
+
+
+
+
+
+
+
+// Les parametres data et n doivent etre definis comme dans le corps de la fonction clustering
+vector<vector<vector<node>>> heuristic_loop(vector<vector<node>> data, int n, vector<int> distances) {
+
+    // Ce qu'on va renvoyer a la fin
+    vector<vector<vector<node>>> data_new(data.size());
+
+    // On construit aléatoirement l'ensemble des indices a prendre pour les boucles de chaque distributeur
+
+    // On construit data_new colonne par colonne
+    for (int i=0; i<data.size(); i++) {
+
+        // Dans le cas ou il y a moins de 30 elements dans le groupe i, il n'y a ni besoin de creer de chaine, ni besoin de choisir
+        // la boucle puisque ce sera toujours la meme
+        if (data[i].size() <= 30) {
+
+            // On ordonne data pour le ieme distributeur de facon a avoir le (j+1)eme element qui est le proche voisin
+            // du jeme element parmi ceux qu'on a pas encore parcouru pour tout j
+            for (int j=0; j<data[i].size()-1; j++) {
+                int distance_min = distances[n*data[i][j].get_indice() + data[i][j+1].get_indice()];
+                int index = j+1;
+                for (int k=j+2; k<data[i].size(); k++) {
+                    if (distances[n*data[i][j].get_indice() + data[i][k].get_indice()] < distance_min) {
+                        distance_min = distances[n*data[i][j].get_indice() + data[i][k].get_indice()];
+                        index = k;
+                    }
+                }
+                data[i].insert(data[i].begin()+j+1, data[i][index]);
+                data[i].erase(data[i].begin()+index+1);
+            }
+
+            // On remplit data_new
+            data_new[i].push_back(data[i]);
+        }
+
+        // Dans le cas ou il y a strictement plus de 30 elements, on a besoin de faire des chaines et de choisir aléatoirement
+        // la boucle principale
+        else {
+
+            // Construction de l'ensemble des indices de la boucle principale
+            set<int> set_int;
+            set_int.insert(0);
+            while (set_int.size() < 30) {
+                default_random_engine generator(random_device{}());
+                set_int.insert(uniform_int_distribution<>(0,data[i].size()-1)(generator));
+            }
+
+            // On remplit ce qu'il y aura dans la boucle et dans les chaines
+            vector<node> loop;
+            vector<node> chain;
+            set<int>::iterator it;
+            for (int k=0; k<data[i].size(); k++) {
+                it = set_int.find(k);
+                if (it == set_int.end()) {
+                    chain.push_back(data[i][k]);
+                }
+                else {
+                    loop.push_back(data[i][k]);
+                }
+            }
+
+            // On ordonne la boucle et les chaines pour avoir un cout petit
+            for (int j=0; j<loop.size()-1; j++) {
+                int distance_min = distances[n*loop[j].get_indice() + loop[j+1].get_indice()];
+                int index = j+1;
+                for (int k=j+2; k<loop.size(); k++) {
+                    if (distances[n*loop[j].get_indice() + loop[k].get_indice()] < distance_min) {
+                        distance_min = distances[n*loop[j].get_indice() + loop[k].get_indice()];
+                        index = k;
+                    }
+                }
+                loop.insert(loop.begin()+j+1, loop[index]);
+                loop.erase(loop.begin()+index+1);
+            }
+            for (int j=0; j<chain.size()-1; j++) {
+                int distance_min = distances[n*chain[j].get_indice() + chain[j+1].get_indice()];
+                int index = j+1;
+                for (int k=j+2; k<chain.size(); k++) {
+                    if (distances[n*chain[j].get_indice() + chain[k].get_indice()] < distance_min) {
+                        distance_min = distances[n*chain[j].get_indice() + chain[k].get_indice()];
+                        index = k;
+                    }
+                }
+                chain.insert(chain.begin()+j+1, chain[index]);
+                chain.erase(chain.begin()+index+1);
+            }
+
+            // On met la boucle dans data_new
+            data_new[i].push_back(loop);
+
+            // On cree les chaines jusqu'a ce que tous les noeuds soient dans une chaine
+            for (int j=0; j<chain.size(); j++) {
+
+                // Si la chaine precedente est de longueur 5, on en cree une nouvelle
+                // On cherche le point de la boucle le plus proche pour commencer la chaine
+                if (data_new[i][data_new[i].size()-1].size() >= 5) {
+                    vector<node> new_chain;
+                    int distance_min = distances[n*data_new[i][0][0].get_indice() + chain[j].get_indice()];
+                    int index = 0;
+                    for (int k=1; k<30; k++) {
+                        if (distances[n*data_new[i][0][k].get_indice() + chain[j].get_indice()] < distance_min) {
+                            distance_min = distances[n*data_new[i][0][k].get_indice() + chain[j].get_indice()];
+                            index = k;
+                        }
+                    }
+                    new_chain.push_back(data_new[i][0][index]);
+                    new_chain.push_back(chain[j]);
+                    data_new[i].push_back(new_chain);
+                }
+
+                // Sinon, on regarde le cout pour passer du dernier noeud de la derniere chaine au point que l'on considere (cost1)
+                // On compare au cout en creant une nouvelle chaine avec un point de la boucle et ce point (cost2)
+                // On effectue l'action de plus petit cout
+                else {
+
+                    // Calcul du cout 1
+                    int cost1 = distances[n*data_new[i][data_new[i].size()-1][data_new[i][data_new[i].size()-1].size()-1].get_indice() + chain[j].get_indice()];
+
+                    // Calcul du cout 2
+                    int cost2 = distances[n*data_new[i][0][0].get_indice() + chain[j].get_indice()];
+                    int index = 0;
+                    for (int k=1; k<data_new[i][0].size(); k++) {
+                        if (distances[n*data_new[i][0][k].get_indice() + chain[j].get_indice()] < cost2) {
+                            cost2 = distances[n*data_new[i][0][k].get_indice() + chain[j].get_indice()];
+                            index = k;
+                        }
+                    }
+
+                    // Si rajouter le noeud a la fin de la derniere chaine est le meilleur choix
+                    if (cost1 < cost2) {
+                        data_new[i][data_new[i].size()-1].push_back(chain[j]);
+                    }
+
+                    // Sinon, si creer une nouvelle chaine est le meilleur choix
+                    else {
+                        vector<node> new_chain;
+                        new_chain.push_back(data_new[i][0][index]);
+                        new_chain.push_back(chain[j]);
+                        data_new[i].push_back(new_chain);
+                    }
+
+                }
+
+            }
+
+        }
+
+    }
+    return data_new;
 }
 
