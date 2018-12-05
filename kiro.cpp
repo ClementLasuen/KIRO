@@ -155,12 +155,19 @@ void echange(vector<vector<node>> &C, int c1, int c2, int i1, int i2){
     C[n2][i2].set_indice(temp.get_indice());
 }
 
-void echange_aleat(vector<vector<node>> &data, vector<node> distributions, vector<node> terminal){
-    int c = 0;
-    int s = 0;
-    while (s<31){
-        c = rand()%distributions.size();
-        s = data[c].size();
+void echange_aleat(vector<vector<vector<node>>> &data, vector<node> distributions, vector<node> terminal){
+    int n_distrib = rand()%data.size();
+    if (data[n_distrib].size()==1){
+        int b_size = data[n_distrib][0].size();
+        int i1 = rand()%b_size;
+        int i2 = i1;
+        while (i1==i2)
+            i2 = rand()%b_size;
+        echange(data[n_distrib],0,0,i1,i2);
+    }
+    else if(data[n_distrib].size()>1){
+        int b_size = data[n_distrib][0].size();
+        int n2 =
     }
     int d = data[c].size()-30;
     int i = rand()%(d-1) + 31;
