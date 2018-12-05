@@ -76,6 +76,7 @@ void write(vector<vector<node> > V, string name){
                 while(k+4 < V[i].size()){
                     fichier << "c" ;
                     fichier<<" " << V[i][0].get_indice();
+                    // raccorder au point de la boucle le plus proche plutot qu'a la distribution
                     for(int l=0;l<4;l++)
                         fichier<< " " << V[i][k+l].get_indice() ;
                     fichier<< endl;

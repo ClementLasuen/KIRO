@@ -10,7 +10,7 @@ int main()
 
     int n = read_file(string("pim/distances.csv"),string("pim/nodes0.csv"), D, distribution, terminal);
 
-    vector<vector<node>> data = clustering(distribution, terminal, D);
+    vector<vector<node> > data = clustering(distribution, terminal, D);
 
     int N = 1000000;
     int cnt = 0;
@@ -22,7 +22,7 @@ int main()
     cout << c << endl;
     int c_test;
     while(cnt<N){
-        vector<vector<node>> data_test = data;
+        vector<vector<node> > data_test = data;
         echange_aleat(data_test,distribution, terminal);
         c_test = cost_solution(data_test, D);
         if (c_test< c) {

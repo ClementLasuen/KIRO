@@ -43,7 +43,7 @@ int cost_solution(vector<vector<node> > C, vector<int> lenght);
 // Assume that the first element is the distribution
 vector<node> change_one_node(vector<node> circuit, vector<node> nodes, vector<double> lenght);
 
-vector<vector<node>> clustering(vector<node> nodes_d, vector<node> nodes_t, vector<int> distances);
+vector<vector<node> > clustering(vector<node> nodes_d, vector<node> nodes_t, vector<int> distances);
 
 void echange(vector<node> &C, int i, int j);
 
