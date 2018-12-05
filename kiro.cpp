@@ -147,12 +147,12 @@ void change_T(vector<node> &C, vector<node> nodes, vector<double> lenght){
 }
 */
 
-void echange(vector<node> &C, int i, int j){
-    node temp(C[i].get_x(),C[i].get_y(), C[i].get_node_type(),C[i].get_indice());
-    C[i].set(C[j].get_x(), C[j].get_y());
-    C[i].set_indice(C[j].get_indice());
-    C[j].set(temp.get_x(), temp.get_y());
-    C[j].set_indice(temp.get_indice());
+void echange(vector<vector<node>> &C, int c1, int c2, int i1, int i2){
+    node temp(C[n1][i1].get_x(),C[i1][n1].get_y(), C[i1][n1].get_node_type(),C[i1][n1].get_indice());
+    C[n1][i1].set(C[n2][i2].get_x(), C[n2][i2].get_y());
+    C[n1][i1].set_indice(C[n2][i2].get_indice());
+    C[n2][i2].set(temp.get_x(), temp.get_y());
+    C[n2][i2].set_indice(temp.get_indice());
 }
 
 void echange_aleat(vector<vector<node>> &data, vector<node> distributions, vector<node> terminal){
