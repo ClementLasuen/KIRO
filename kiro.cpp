@@ -19,10 +19,10 @@ int cost_solution(vector<vector<node> > C, vector<int> lenght){
 int cost(vector<node> C, vector<int> lenght){
     int result =0;
     int n = sqrt(lenght.size());
-
+    int m = C.size();
     // COUT DE LA BOUCLE PRINCIPALE
 
-    for(int i=1; i< min(C.size(), 30) ; i++)  result += lenght[ C[i].get_indice() + C[i-1].get_indice()*n ];
+    for(int i=1; i< min(m, 30) ; i++)  result += lenght[ C[i].get_indice() + C[i-1].get_indice()*n ];
     if(C.size() >= 30) result += lenght[ C[29].get_indice()*n + C[0].get_indice()];
 
     // COUT DES BRANCHES ASSOCIEES
