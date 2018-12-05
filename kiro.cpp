@@ -22,6 +22,7 @@ int cost(vector<node> C, vector<int> lenght){
     for(int i=1; i< C.size(); i++){
         result += lenght[ C[i].get_indice() + C[i-1].get_indice()*n ];
     }
+    result += lenght[ C[C.size()].get_indice()*n + C[0].get_indice()];
 
     return result;
 }
