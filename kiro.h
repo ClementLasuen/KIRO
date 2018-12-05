@@ -6,6 +6,7 @@
 #include <vector>
 #include <iostream>
 #include <random>
+#include <map>
 
 
 using namespace std;
@@ -43,9 +44,11 @@ int cost_solution(vector<vector<node> > C, vector<int> lenght);
 // Assume that the first element is the distribution
 vector<node> change_one_node(vector<node> circuit, vector<node> nodes, vector<double> lenght);
 
-void echange(vector<node> &C, int i, int j);
+vector<vector<node>> clustering(vector<node> nodes_d, vector<node> nodes_t, vector<int> distances);
 
-void echange_aleat(vector<vector<node>> &data, vector<node> distributions, vector<node> terminal);
+void echange(vector<vector<node>> &C, int n1, int n2, int i1, int i2);
+
+void echange_aleat(vector<vector<vector<node>>> &data, vector<node> distributions, vector<node> terminal);
 
 vector<vector<vector<node>>> clustering(vector<node> nodes_d, vector<node> nodes_t, vector<int> distances);
 
