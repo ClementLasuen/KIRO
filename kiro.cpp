@@ -147,7 +147,7 @@ void change_T(vector<node> &C, vector<node> nodes, vector<double> lenght){
 }
 */
 
-void echange(vector<vector<node>> &C, int c1, int c2, int i1, int i2){
+void echange(vector<vector<node>> &C, int n1, int n2, int i1, int i2){
     node temp(C[n1][i1].get_x(),C[i1][n1].get_y(), C[i1][n1].get_node_type(),C[i1][n1].get_indice());
     C[n1][i1].set(C[n2][i2].get_x(), C[n2][i2].get_y());
     C[n1][i1].set_indice(C[n2][i2].get_indice());
@@ -156,25 +156,67 @@ void echange(vector<vector<node>> &C, int c1, int c2, int i1, int i2){
 }
 
 void echange_aleat(vector<vector<vector<node>>> &data, vector<node> distributions, vector<node> terminal){
+    map<int,vector<vector<int>>> encrage_chaine; // vecteur listant les noeuds auquels des chaines sont encrees : a un noeud, donne le vecteur des (numero distribution, numero chaine)
+    for(int i = 0; i<data.size(); i++){
+        if (data[i].size()>1){
+            for(int j=1;j<data[i].size();i++){
+                vector<vector<int>> v;
+                encrage_chaine[data[i][j][0].get_indice()] = v;
+            }
+        }
+    }
+    for(int i = 0; i<data.size(); i++){
+        if (data[i].size()>1){
+            for(int j=1;j<data[i].size();i++){
+                vector<int> v = {i,j};
+                encrage_chaine[data[i][j][0].get_indice()].push_back(v);
+            }
+        }
+    }
     int n_distrib = rand()%data.size();
     if (data[n_distrib].size()==1){
         int b_size = data[n_distrib][0].size();
-        int i1 = rand()%b_size;
+        int i1 = rand()%(b_size-1)+1;
         int i2 = i1;
         while (i1==i2)
-            i2 = rand()%b_size;
+            i2 = rand()%(b_size-1)+1;
         echange(data[n_distrib],0,0,i1,i2);
     }
     else if(data[n_distrib].size()>1){
-        int b_size = data[n_distrib][0].size();
-        int n2 =
+        int n1 = rand()%data[n_distrib].size();
+        int n2 = rand()%data[n_distrib].size();
+        if (n2<n1){     // on fait en sorte que n1<n2
+            int a = n2;
+            n2 = n1;
+            n1 = a;
+        }
+        if (n1 > 0){
+            int c1_size = data[n_distrib][n1].size();
+            int c2_size = data[n_distrib][n2].size();
+            if (c1_size>1 && c2_size>1){
+                int i1 = rand()%(c1_size-1)+1;
+                int i2 = rand()%(c2_size-1)+1;
+                echange(data[n_distrib],0,0,i1,i2);
+            }
+        }
+        else if (n1 == 0){
+            int c1_size = data[n_distrib][n1].size();
+            int c2_size = data[n_distrib][n2].size();
+            if (c1_size>1 && c2_size>1){
+                int i1 = rand()%(c1_size-1)+1;
+                int i2 = rand()%(c2_size-1)+1;
+                int indice = data[n_distrib][n1][i1].get_indice();
+                auto it = encrage_chaine.find(indice);
+                if (it!=encrage_chaine.end()){
+                    encrage_chaine[data[n_distrib][n2][i2].get_indice()] = *it;
+                    for(int i = 0; i<it->size(); i++){
+                        data[(*it)[i][0]][(*it)[i][1]][0] = data[n_distrib][n2][i2][0];
+                        encrage_chaine.erase(indice);
+                    }
+                }
+            }
+        }
     }
-    int d = data[c].size()-30;
-    int i = rand()%(d-1) + 31;
-    int j = i;
-    while (i==j)
-        j = rand()%(d-1) + 31;
-    echange(data[c],i,j);
 }
 
 void switch_chain(vector<vector<node> > &sol, vector<int> lenght){
