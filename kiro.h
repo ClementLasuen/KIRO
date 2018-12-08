@@ -38,9 +38,9 @@ public :
 
 };
 
-int cost(vector<node> C, vector<int> lenght);
+int cost(vector<vector<node> > C, vector<int> lenght);
 
-int cost_solution(vector<vector<node> > C, vector<int> lenght);
+int cost_solution(vector<vector<vector<node> > > C, vector<int> lenght);
 
 // Assume that the first element is the distribution
 vector<node> change_one_node(vector<node> circuit, vector<node> nodes, vector<double> lenght);

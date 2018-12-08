@@ -9,18 +9,22 @@ bool node::is_in(vector<node> V){
 }
 
 
-int cost_solution(vector<vector<node> > C, vector<int> lenght){
+int cost_solution(vector<vector<vector<node>>> C, vector<int> lenght){
     int result =0;
 
     for(int i=0;i<C.size();i++) result += cost(C[i],lenght);
     return result;
 }
 
-int cost(vector<node> C, vector<int> lenght){
+int cost(vector<vector<node>> C, vector<int> lenght){ // Pour une distribution
     int result =0;
     int n = sqrt(lenght.size());
-    for(int i=1; i< C.size(); i++){
-        result += lenght[ C[i].get_indice() + C[i-1].get_indice()*n ];
+    for (int j = 0; j<C.size(); j++){
+        if (j==0)
+            result+=lenght[ C[j][0].get_indice() + C[j][C[j].size()-1].get_indice()*n ];
+        for(int i=1; i< C[j].size(); i++){
+            result += lenght[ C[j][i].get_indice() + C[j][i-1].get_indice()*n ];
+        }
     }
 
     return result;
@@ -29,7 +33,7 @@ int cost(vector<node> C, vector<int> lenght){
 //-------------------------------------------------------
 //----------- Heuristique -------------------------------
 
-
+/*
 vector<node> change_one_node(vector<node> circuit, vector<node> nodes, vector<int> lenght, int i){
     int c = cost(circuit, lenght);
     srand(clock());
@@ -45,7 +49,7 @@ vector<node> change_one_node(vector<node> circuit, vector<node> nodes, vector<in
     }
     return circuit2;
 }
-
+*/
 
 
 
@@ -237,7 +241,7 @@ void change_T(vector<node> &C, vector<node> nodes, vector<double> lenght){
 */
 
 void echange(vector<vector<node>> &C, int n1, int n2, int i1, int i2){
-    node temp(C[n1][i1].get_x(),C[i1][n1].get_y(), C[i1][n1].get_node_type(),C[i1][n1].get_indice());
+    node temp(C[n1][i1].get_x(),C[n1][i1].get_y(), C[n1][i1].get_node_type(),C[n1][i1].get_indice());
     C[n1][i1].set(C[n2][i2].get_x(), C[n2][i2].get_y());
     C[n1][i1].set_indice(C[n2][i2].get_indice());
     C[n2][i2].set(temp.get_x(), temp.get_y());
@@ -248,7 +252,7 @@ void echange_aleat(vector<vector<vector<node>>> &data, vector<node> distribution
     map<int,vector<vector<int>>> encrage_chaine; // vecteur listant les noeuds auquels des chaines sont encrees : a un noeud, donne le vecteur des (numero distribution, numero chaine)
     for(int i = 0; i<data.size(); i++){
         if (data[i].size()>1){
-            for(int j=1;j<data[i].size();i++){
+            for(int j=1;j<data[i].size();j++){
                 vector<vector<int>> v;
                 encrage_chaine[data[i][j][0].get_indice()] = v;
             }
@@ -256,7 +260,7 @@ void echange_aleat(vector<vector<vector<node>>> &data, vector<node> distribution
     }
     for(int i = 0; i<data.size(); i++){
         if (data[i].size()>1){
-            for(int j=1;j<data[i].size();i++){
+            for(int j=1;j<data[i].size();j++){
                 vector<int> v = {i,j};
                 encrage_chaine[data[i][j][0].get_indice()].push_back(v);
             }
@@ -297,12 +301,12 @@ void echange_aleat(vector<vector<vector<node>>> &data, vector<node> distribution
                 int indice = data[n_distrib][n1][i1].get_indice();
                 auto it = encrage_chaine.find(indice);
                 if (it!=encrage_chaine.end()){
-                    encrage_chaine[data[n_distrib][n2][i2].get_indice()] = it->second;
-                    for(int i = 0; i<it->second.size(); i++){
+                    for(int i = 0; i<(it->second).size(); i++){
                         data[it->second[i][0]][it->second[i][1]][0] = data[n_distrib][n2][i2];
-                        encrage_chaine.erase(indice);
-                        echange(data[n_distrib],n1,n2,i1,i2);
                     }
+                    echange(data[n_distrib],n1,n2,i1,i2);
+                    encrage_chaine[data[n_distrib][n2][i2].get_indice()] = it->second;
+                    encrage_chaine.erase(indice);
                 }
             }
         }
