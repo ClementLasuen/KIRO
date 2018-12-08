@@ -55,11 +55,21 @@ int read_file(string distances_file, string nodes_file, vector<int> &D, vector<n
 
 
 // V est un chemin ou un circuit, cette fonction ecrit ligne par ligne
-void write(vector<vector<node> > V, string name){
+void write(vector<vector<vector<node>>> V, string name){
     string file_name = string("../")+name; //+string<int>(nb_iterations)+string("_")+string<int>(h);
     ofstream fichier(file_name.c_str(), ios::out|ios::trunc); // On va ecrire a la fin du fichier
     if (fichier){
         for(int i=0;i<V.size();i++){
+            for(int j=0;j< V[i].size(); j++){
+                if(j==0) fichier << "b";
+                else fichier << "c";
+                for(int k=0; k<V[i][j].size();k++){
+                    fichier << " " << V[i][j][k].get_indice();
+                }
+                fichier << endl;
+            }
+
+            /*
             if(V[i].size() < 30){
                 fichier << "b";
                 for(int j=0;j<V[i].size();j++)
@@ -89,6 +99,7 @@ void write(vector<vector<node> > V, string name){
                 }
                 fichier << endl;
             }
+            */
         }
 
     }

@@ -8,7 +8,7 @@ int main()
     vector<node> distribution;
     vector<node> terminal;
 
-    int n = read_file(string("pim/distances.csv"),string("pim/nodes0.csv"), D, distribution, terminal);
+    int n = read_file(string("grenoble/distances.csv"),string("grenoble/nodes0.csv"), D, distribution, terminal);
 
     vector<vector<vector<node>>> data = clustering(distribution, terminal, D);
 
@@ -33,7 +33,7 @@ int main()
         cnt+=1;
     }
 
-//    write(data, string("resu_pim.txt"));
+    write(data, string("resu_grenoble.txt"));
 
     cout << c << endl;
 
