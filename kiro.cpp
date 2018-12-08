@@ -353,6 +353,47 @@ void switch_chain(vector<vector<node> > &sol, vector<int> lenght){
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//int n = nodes_d.size() + nodes_t.size();
+//vector<int> index_clusters;
+//for (int i=0; i<nodes_t.size(); i++) {
+//    int index = 0;
+//    int min_distance = distances[n*nodes_t[i].get_indice() + nodes_d[0].get_indice()];
+//    for (int j=0; j<nodes_d.size(); j++) {
+//        if (distances[n*nodes_t[i].get_indice() + nodes_d[j].get_indice()] < min_distance) {
+//            min_distance = distances[n*nodes_t[i].get_indice() + nodes_d[j].get_indice()];
+//            index = j;
+//        }
+//    }
+//    index_clusters.push_back(index);
+//}
+//vector<vector<node>> data(nodes_d.size());
+//for (int i=0; i<nodes_d.size(); i++) {
+//    data[i].push_back(nodes_d[i]);
+//}
+//for (int i=0; i<nodes_t.size(); i++) {
+//    data[index_clusters[i]].push_back(nodes_t[i]);
+//}
+
+
+
 // Les parametres data et n doivent etre definis comme dans le corps de la fonction clustering
 vector<vector<vector<node>>> heuristic_loop(vector<vector<node>> data, int n, vector<int> distances) {
 
