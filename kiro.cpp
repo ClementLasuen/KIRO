@@ -395,7 +395,8 @@ void switch_chain(vector<vector<node> > &sol, vector<int> lenght){
 
 
 // Les parametres data et n doivent etre definis comme dans le corps de la fonction clustering
-vector<vector<vector<node>>> heuristic_loop(vector<vector<node>> data, int n, vector<int> distances) {
+// Il faut que data soit ordonne
+vector<vector<vector<node>>> heuristic_loop(vector<vector<node>> data, int n, vector<int> distances, int indice) {
 
     // Ce qu'on va renvoyer a la fin
     vector<vector<vector<node>>> data_new(data.size());
@@ -408,22 +409,6 @@ vector<vector<vector<node>>> heuristic_loop(vector<vector<node>> data, int n, ve
         // Dans le cas ou il y a moins de 30 elements dans le groupe i, il n'y a ni besoin de creer de chaine, ni besoin de choisir
         // la boucle puisque ce sera toujours la meme
         if (data[i].size() <= 30) {
-
-            // On ordonne data pour le ieme distributeur de facon a avoir le (j+1)eme element qui est le proche voisin
-            // du jeme element parmi ceux qu'on a pas encore parcouru pour tout j
-            for (int j=0; j<data[i].size()-1; j++) {
-                int distance_min = distances[n*data[i][j].get_indice() + data[i][j+1].get_indice()];
-                int index = j+1;
-                for (int k=j+2; k<data[i].size(); k++) {
-                    if (distances[n*data[i][j].get_indice() + data[i][k].get_indice()] < distance_min) {
-                        distance_min = distances[n*data[i][j].get_indice() + data[i][k].get_indice()];
-                        index = k;
-                    }
-                }
-                data[i].insert(data[i].begin()+j+1, data[i][index]);
-                data[i].erase(data[i].begin()+index+1);
-            }
-
             // On remplit data_new
             data_new[i].push_back(data[i]);
         }
@@ -431,53 +416,63 @@ vector<vector<vector<node>>> heuristic_loop(vector<vector<node>> data, int n, ve
         // Dans le cas ou il y a strictement plus de 30 elements, on a besoin de faire des chaines et de choisir aléatoirement
         // la boucle principale
         else {
-
-            // Construction de l'ensemble des indices de la boucle principale
-            set<int> set_int;
-            set_int.insert(0);
-            while (set_int.size() < 30) {
-                default_random_engine generator(random_device{}());
-                set_int.insert(uniform_int_distribution<>(0,data[i].size()-1)(generator));
-            }
-
-            // On remplit ce qu'il y aura dans la boucle et dans les chaines
+            //Definition de la boucle principale et de la chaine totale
             vector<node> loop;
             vector<node> chain;
-            set<int>::iterator it;
-            for (int k=0; k<data[i].size(); k++) {
-                it = set_int.find(k);
-                if (it == set_int.end()) {
-                    chain.push_back(data[i][k]);
+            if (i == indice) {
+                // Construction de l'ensemble des indices de la boucle principale
+                set<int> set_int;
+                set_int.insert(0);
+                while (set_int.size() < 30) {
+                    default_random_engine generator(random_device{}());
+                    set_int.insert(uniform_int_distribution<>(0,data[i].size()-1)(generator));
                 }
-                else {
-                    loop.push_back(data[i][k]);
-                }
-            }
 
-            // On ordonne la boucle et les chaines pour avoir un cout petit
-            for (int j=0; j<loop.size()-1; j++) {
-                int distance_min = distances[n*loop[j].get_indice() + loop[j+1].get_indice()];
-                int index = j+1;
-                for (int k=j+2; k<loop.size(); k++) {
-                    if (distances[n*loop[j].get_indice() + loop[k].get_indice()] < distance_min) {
-                        distance_min = distances[n*loop[j].get_indice() + loop[k].get_indice()];
-                        index = k;
+                // On remplit ce qu'il y aura dans la boucle et dans les chaines
+                set<int>::iterator it;
+                for (int k=0; k<data[i].size(); k++) {
+                    it = set_int.find(k);
+                    if (it == set_int.end()) {
+                        chain.push_back(data[i][k]);
+                    }
+                    else {
+                        loop.push_back(data[i][k]);
                     }
                 }
-                loop.insert(loop.begin()+j+1, loop[index]);
-                loop.erase(loop.begin()+index+1);
+
+                // On ordonne la boucle et les chaines pour avoir un cout petit
+                for (int j=0; j<loop.size()-1; j++) {
+                    int distance_min = distances[n*loop[j].get_indice() + loop[j+1].get_indice()];
+                    int index = j+1;
+                    for (int k=j+2; k<loop.size(); k++) {
+                        if (distances[n*loop[j].get_indice() + loop[k].get_indice()] < distance_min) {
+                            distance_min = distances[n*loop[j].get_indice() + loop[k].get_indice()];
+                            index = k;
+                        }
+                    }
+                    loop.insert(loop.begin()+j+1, loop[index]);
+                    loop.erase(loop.begin()+index+1);
+                }
+                for (int j=0; j<chain.size()-1; j++) {
+                    int distance_min = distances[n*chain[j].get_indice() + chain[j+1].get_indice()];
+                    int index = j+1;
+                    for (int k=j+2; k<chain.size(); k++) {
+                        if (distances[n*chain[j].get_indice() + chain[k].get_indice()] < distance_min) {
+                            distance_min = distances[n*chain[j].get_indice() + chain[k].get_indice()];
+                            index = k;
+                        }
+                    }
+                    chain.insert(chain.begin()+j+1, chain[index]);
+                    chain.erase(chain.begin()+index+1);
+                }
             }
-            for (int j=0; j<chain.size()-1; j++) {
-                int distance_min = distances[n*chain[j].get_indice() + chain[j+1].get_indice()];
-                int index = j+1;
-                for (int k=j+2; k<chain.size(); k++) {
-                    if (distances[n*chain[j].get_indice() + chain[k].get_indice()] < distance_min) {
-                        distance_min = distances[n*chain[j].get_indice() + chain[k].get_indice()];
-                        index = k;
-                    }
+            else {
+                for (int j=0; j<30; j++) {
+                    loop.push_back(data[i][j]);
                 }
-                chain.insert(chain.begin()+j+1, chain[index]);
-                chain.erase(chain.begin()+index+1);
+                for (int j=30; j<data[i].size(); j++) {
+                    chain.push_back(data[i][j]);
+                }
             }
 
             // On met la boucle dans data_new
