@@ -52,11 +52,11 @@ int main()
 
 
     int n_clustering = distribution.size() + terminal.size();
-    int rep = 1000;
+    int rep = 1000000;
     vector<vector<vector<node>>> best_data = clustering(distribution, terminal, D);
     int best_cost = cost_solution(best_data, D);
     cout << best_cost << endl;
-    for (int indice=0; indice<best_data.size(); indice++) {
+    for (int indice=5; indice<best_data.size(); indice++) {
         for (int i=0; i<rep; i++) {
             vector<vector<vector<node>>> new_data = heuristic_loop(best_data, n_clustering, D, indice);
             int new_cost = cost_solution(new_data, D);
@@ -64,12 +64,11 @@ int main()
                 best_cost = new_cost;
                 best_data = new_data;
                 cout << best_cost << endl;
+                write(best_data, string("paris_trained_from_index_5.txt"));
             }
         }
         cout << "indice : " << indice << endl;
-        write(best_data, string("resu_pim.txt"));
     }
-
     cout << best_cost << endl;
 
 
