@@ -12,44 +12,7 @@ int main()
 
     vector<vector<vector<node>>> data = clustering(distribution, terminal, D);
 
-    int N = 100000;
-    int cnt = 0;
-
     //switch_chain(data,D);
-
-
-//    int c = cost_solution( data, D);
-//    int c_test;
-//    while(cnt<N){
-//        if (cnt%(N/100)==0) cout << cnt/(N/100) << endl;
-//        vector<vector<vector<node>>> data_test = data;
-//        echange_aleat(data_test,distribution, terminal);
-//        c_test = cost_solution(data_test, D);
-//        if (c_test< c) {
-//            data = data_test;
-//            c = c_test;
-//            cout << c_test << endl;
-//        }
-//        cnt+=1;
-//    }
-
-//    write(data, string("resu_pim.txt"));
-
-//    cout << c << endl;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     int n_clustering = distribution.size() + terminal.size();
     int rep = 1000000;
@@ -64,15 +27,39 @@ int main()
                 best_cost = new_cost;
                 best_data = new_data;
                 cout << best_cost << endl;
-                write(best_data, string("paris_trained_from_index_5.txt"));
+                write(best_data, string("pim.txt"));
             }
         }
         cout << "indice : " << indice << endl;
     }
+
     cout << best_cost << endl;
 
+    write(best_data, string("resu_pim.txt"));
 
+    cout << "Fin de la premiere heuristique" << endl << "Passage a la deuxieme" << endl;
 
+    /*
+    int N = 50000;
+    int cnt = 0;
+
+    while(cnt<N){
+        if (cnt%(N/100)==0) cout << cnt/(N/100) << endl;
+        vector<vector<vector<node>>> data_test = data;
+        echange_aleat(data_test,distribution, terminal);
+        int new_cost = cost_solution(data_test, D);
+        if (new_cost< best_cost) {
+            best_data = data_test;
+            best_cost = new_cost;
+            cout << best_cost << endl;
+        }
+        cnt+=1;
+    }
+
+    write(data, string("resu_pim.txt"));
+    */
+
+    cout << best_cost << endl;
 
     return 0;
 }
