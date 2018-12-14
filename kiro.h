@@ -8,6 +8,7 @@
 #include <random>
 #include <map>
 #include <set>
+#include <climits>
 
 
 using namespace std;
@@ -52,5 +53,7 @@ void echange_aleat(vector<vector<vector<node>>> &data, vector<node> distribution
 vector<vector<vector<node>>> clustering(vector<node> nodes_d, vector<node> nodes_t, vector<int> distances);
 
 vector<vector<vector<node>>> heuristic_loop(vector<vector<vector<node>>> best_data, int n, vector<int> distances, int indice);
+
+vector<vector<vector<node>>> heuristic_rs(vector<vector<vector<node>>> best_data, int n, vector<int> distances, int indice);
 
 void switch_chain(vector<vector<node> > &sol, vector<int> lenght);
