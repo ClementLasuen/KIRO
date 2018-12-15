@@ -15,29 +15,29 @@ int main()
     //switch_chain(data,D);
 
     int n_clustering = distribution.size() + terminal.size();
-    int rep = 1000000;
+    int rep = 1000;
     vector<vector<vector<node>>> best_data = clustering(distribution, terminal, D);
     int best_cost = cost_solution(best_data, D);
     cout << best_cost << endl;
-    for (int indice=5; indice<best_data.size(); indice++) {
+    for (int indice=1; indice<best_data.size(); indice++) {
         for (int i=0; i<rep; i++) {
-            vector<vector<vector<node>>> new_data = heuristic_loop(best_data, n_clustering, D, indice);
+            vector<vector<vector<node>>> new_data = heuristic_rs(best_data, n_clustering, D, indice);
             int new_cost = cost_solution(new_data, D);
             if (new_cost < best_cost) {
                 best_cost = new_cost;
                 best_data = new_data;
                 cout << best_cost << endl;
-                write(best_data, string("pim.txt"));
+                write(best_data, string("resu_pim.txt"));
             }
         }
         cout << "indice : " << indice << endl;
     }
 
-    cout << best_cost << endl;
+    //cout << best_cost << endl;
 
-    write(best_data, string("resu_pim.txt"));
+    //write(best_data, string("resu_pim.txt"));
 
-    cout << "Fin de la premiere heuristique" << endl << "Passage a la deuxieme" << endl;
+    //cout << "Fin de la premiere heuristique" << endl << "Passage a la deuxieme" << endl;
 
     /*
     int N = 50000;

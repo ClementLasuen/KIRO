@@ -844,7 +844,7 @@ vector<vector<vector<node>>> heuristic_rs(vector<vector<vector<node>>> best_data
 
     // Finalement, on modifie data_new_add
     // On ne peut le faire que si la taille de la boucle initiale est inferieur ou egale a 29
-    if (previous_loop_elements.size() <= 29) {
+    if ((previous_loop_elements.size() <= 29) && (previous_chains_elements.size() >= 2)) {
         vector<vector<node>> new_column_add;
 
         //Definition de la boucle principale et de la chaine totale
