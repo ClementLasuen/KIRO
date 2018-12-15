@@ -628,7 +628,7 @@ vector<vector<vector<node>>> heuristic_rs(vector<vector<vector<node>>> best_data
 
         // On choisit aleatoirement l'element de la boucle qui va etre echange avec un element de la chaine
         default_random_engine generator(random_device{}());
-        int index_loop_change = uniform_int_distribution<>(0,previous_loop_elements.size()-1)(generator);
+        int index_loop_change = uniform_int_distribution<>(1,previous_loop_elements.size()-1)(generator);
         int index_chains_change = uniform_int_distribution<>(0,previous_chains_elements.size()-1)(generator);
 
         loop_change.push_back(chains_change[index_chains_change]);
@@ -742,7 +742,7 @@ vector<vector<vector<node>>> heuristic_rs(vector<vector<vector<node>>> best_data
 
         // On choisit aleatoirement l'element de la boucle qui va etre echange avec un element de la chaine
         default_random_engine generator(random_device{}());
-        int index_loop_remove = uniform_int_distribution<>(0,previous_loop_elements.size()-1)(generator);
+        int index_loop_remove = uniform_int_distribution<>(1,previous_loop_elements.size()-1)(generator);
 
         chains_remove.push_back(loop_remove[index_loop_remove]);
         loop_remove.erase(loop_remove.begin()+index_loop_remove);

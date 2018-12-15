@@ -19,7 +19,7 @@ int main()
     vector<vector<vector<node>>> best_data = clustering(distribution, terminal, D);
     int best_cost = cost_solution(best_data, D);
     cout << best_cost << endl;
-    for (int indice=1; indice<best_data.size(); indice++) {
+    for (int indice=0; indice<best_data.size(); indice++) {
         for (int i=0; i<rep; i++) {
             vector<vector<vector<node>>> new_data = heuristic_rs(best_data, n_clustering, D, indice);
             int new_cost = cost_solution(new_data, D);
