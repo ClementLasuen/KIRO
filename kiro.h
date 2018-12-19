@@ -9,7 +9,8 @@
 #include <map>
 #include <set>
 #include <climits>
-
+#include <fstream>
+#include <string>
 
 using namespace std;
 
@@ -39,6 +40,11 @@ public :
 
 };
 
+
+int read_file(string distances_file, string nodes_file, vector<int> &D, vector<node> &distribution, vector<node> &terminal);
+
+void write(vector<vector<vector<node>>> V, string name);
+
 int cost(vector<vector<node> > C, vector<int> lenght);
 
 int cost_solution(vector<vector<vector<node> > > C, vector<int> lenght);
@@ -50,10 +56,17 @@ void echange(vector<vector<node>> &C, int n1, int n2, int i1, int i2);
 
 void echange_aleat(vector<vector<vector<node>>> &data, vector<node> distributions, vector<node> terminal);
 
+void switch_chain(vector<vector<node> > &sol, vector<int> lenght);
+
 vector<vector<vector<node>>> clustering(vector<node> nodes_d, vector<node> nodes_t, vector<int> distances);
 
-vector<vector<vector<node>>> heuristic_loop(vector<vector<vector<node>>> best_data, int n, vector<int> distances, int indice);
+vector<vector<vector<node>>> change_loop_randomly(vector<vector<vector<node>>> best_data, int n, vector<int> distances, int indice);
 
-vector<vector<vector<node>>> heuristic_rs(vector<vector<vector<node>>> best_data, int n, vector<int> distances, int indice);
+vector<vector<vector<node>>> heuristic_change_loop_randomly(vector<node> distribution, vector<node> terminal, vector<int> D, int rep, string name);
 
-void switch_chain(vector<vector<node> > &sol, vector<int> lenght);
+vector<vector<vector<node>>> neighbor(vector<vector<vector<node>>> best_data, int n, vector<int> distances, int indice);
+
+vector<vector<vector<node>>> heuristic_neighbor(vector<vector<vector<node>>> initial_solution, vector<node> distribution, vector<node> terminal, vector<int> D, int rep, string name);
+
+vector<vector<vector<node>>> heuristic_neighbor_multiple_times(vector<vector<vector<node>>> initial_solution, vector<node> distribution, vector<node> terminal, vector<int> D, int rep, int k, string name);
+

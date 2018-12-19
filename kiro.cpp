@@ -1,5 +1,108 @@
 #include "kiro.h"
 
+// return n le nombre de nodes
+int read_file(string distances_file, string nodes_file, vector<int> &D, vector<node> &distribution, vector<node> &terminal){
+    string path_distance = string("../KIRO/Data/")+distances_file;
+    string path_nodes = string("../KIRO/Data/")+nodes_file;
+    ifstream distances(path_distance);
+    ifstream nodes(path_nodes);
+    if(distances && nodes){
+        int test = 0;
+        int n=0;
+        while(test!=2){
+            int d_;
+            distances >> d_;
+            D.push_back(d_);
+            n++;
+            if (d_==0) test++;
+        }
+        n-=2;
+        for(int i=0; i<n*n-n-2;i++){
+            int d_;
+            distances >> d_;
+            D.push_back(d_);
+        }
+        for(int i=0;i<n;i++){
+            double x;
+            double y;
+            string type;
+            nodes >> x >> y >> type;
+            bool t = false;
+            if(type==string("terminal")) t = true;
+            if (t){
+                node N(x,y,t,i);
+                terminal.push_back(N);
+            }
+            else {
+                node N(x,y,t,i);
+                distribution.push_back(N);
+            }
+        }
+        distances.close();
+        nodes.close();
+        return(n);
+    }
+    else cerr << "pb ouverture" << endl;
+}
+
+
+
+// V est un chemin ou un circuit, cette fonction ecrit ligne par ligne
+void write(vector<vector<vector<node>>> V, string name){
+    string file_name = string("../")+name; //+string<int>(nb_iterations)+string("_")+string<int>(h);
+    ofstream fichier(file_name.c_str(), ios::out|ios::trunc); // On va ecrire a la fin du fichier
+    if (fichier){
+        for(int i=0;i<V.size();i++){
+            for(int j=0;j< V[i].size(); j++){
+                if(j==0) fichier << "b";
+                else fichier << "c";
+                for(int k=0; k<V[i][j].size();k++){
+                    fichier << " " << V[i][j][k].get_indice();
+                }
+                fichier << endl;
+            }
+
+            /*
+            if(V[i].size() < 30){
+                fichier << "b";
+                for(int j=0;j<V[i].size();j++)
+                    fichier << " " << V[i][j].get_indice();
+                fichier << endl;
+            }
+            else{
+                fichier << "b";
+                for(int j=0;j<30;j++)
+                    fichier << " " << V[i][j].get_indice() ;
+                fichier << endl;
+
+                int k=30;
+                while(k+4 < V[i].size()){
+                    fichier << "c" ;
+                    fichier<<" " << V[i][0].get_indice();
+                    for(int l=0;l<4;l++)
+                        fichier<< " " << V[i][k+l].get_indice() ;
+                    fichier<< endl;
+                    k+=4;
+                }
+                fichier << "c" ;
+                fichier<<" " << V[i][0].get_indice();
+                while(k<V[i].size()){
+                    fichier << " "<< V[i][k].get_indice() ;
+                    k++;
+                }
+                fichier << endl;
+            }
+            */
+        }
+
+    }
+    fichier.close();
+}
+
+
+
+
+
 
 bool node::is_in(vector<node> V){
     for(int i=0; i<V.size();i++){
@@ -377,7 +480,7 @@ void switch_chain(vector<vector<node> > &sol, vector<int> lenght){
 
 // n est le nombre de noeuds
 // best_data est le meilleur data que l'on a et que l'on veut ameliorer sur la colonne indice
-vector<vector<vector<node>>> heuristic_loop(vector<vector<vector<node>>> best_data, int n, vector<int> distances, int indice) {
+vector<vector<vector<node>>> change_loop_randomly(vector<vector<vector<node>>> best_data, int n, vector<int> distances, int indice) {
 
     // Ce qu'on va renvoyer a la fin
     vector<vector<vector<node>>> data_new = best_data;
@@ -554,12 +657,27 @@ vector<vector<vector<node>>> heuristic_loop(vector<vector<vector<node>>> best_da
 
 
 
-
-
-
-
-
-
+vector<vector<vector<node>>> heuristic_change_loop_randomly(vector<node> distribution, vector<node> terminal, vector<int> D, int rep, string name) {
+    int n = distribution.size() + terminal.size();
+    vector<vector<vector<node>>> best_data = clustering(distribution, terminal, D);
+    int best_cost = cost_solution(best_data, D);
+    cout << best_cost << endl;
+    for (int indice=0; indice<best_data.size(); indice++) {
+        for (int i=0; i<rep; i++) {
+            vector<vector<vector<node>>> new_data = change_loop_randomly(best_data, n, D, indice);
+            int new_cost = cost_solution(new_data, D);
+            if (new_cost < best_cost) {
+                best_cost = new_cost;
+                best_data = new_data;
+                cout << best_cost << endl;
+                write(best_data, string(name));
+            }
+        }
+        cout << "indice : " << indice << endl;
+    }
+    cout << best_cost << endl;
+    return best_data;
+}
 
 
 
@@ -583,7 +701,7 @@ vector<vector<vector<node>>> heuristic_loop(vector<vector<vector<node>>> best_da
 
 // n est le nombre de noeuds
 // best_data est le meilleur data que l'on a et que l'on veut ameliorer sur la colonne indice
-vector<vector<vector<node>>> heuristic_rs(vector<vector<vector<node>>> best_data, int n, vector<int> distances, int indice) {
+vector<vector<vector<node>>> neighbor(vector<vector<vector<node>>> best_data, int n, vector<int> distances, int indice) {
 
     // On modifie best_data seulement dans la colonne indice
 
@@ -963,4 +1081,87 @@ vector<vector<vector<node>>> heuristic_rs(vector<vector<vector<node>>> best_data
     else {
         return data_new_add;
     }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+vector<vector<vector<node>>> heuristic_neighbor(vector<vector<vector<node>>> initial_solution, vector<node> distribution, vector<node> terminal, vector<int> D, int rep, string name) {
+    int n = distribution.size() + terminal.size();
+    vector<vector<vector<node>>> best_data = initial_solution;
+    int best_cost = cost_solution(best_data, D);
+    cout << best_cost << endl;
+    for (int indice=0; indice<best_data.size(); indice++) {
+        for (int i=0; i<rep; i++) {
+            vector<vector<vector<node>>> new_data = neighbor(best_data, n, D, indice);
+            int new_cost = cost_solution(new_data, D);
+            if (new_cost < best_cost) {
+                best_cost = new_cost;
+                best_data = new_data;
+                cout << best_cost << endl;
+                write(best_data, string(name));
+            }
+        }
+        cout << "indice : " << indice << endl;
+    }
+    cout << best_cost << endl;
+    return best_data;
+}
+
+
+
+
+
+
+
+vector<vector<vector<node>>> heuristic_neighbor_multiple_times(vector<vector<vector<node>>> initial_solution, vector<node> distribution, vector<node> terminal, vector<int> D, int rep, int k, string name) {
+    int n = distribution.size() + terminal.size();
+    vector<vector<vector<node>>> best_data = initial_solution;
+    int best_cost = cost_solution(best_data, D);
+    cout << best_cost << endl;
+    for (int indice=0; indice<best_data.size(); indice++) {
+        vector<vector<vector<node>>> initial_data = best_data;
+        for (int j=0; j<k; j++) {
+            vector<vector<vector<node>>> best_data_j = initial_data;
+            int best_cost_j = cost_solution(best_data_j, D);
+            for (int i=0; i<rep; i++) {
+                vector<vector<vector<node>>> new_data = neighbor(best_data_j, n, D, indice);
+                int new_cost = cost_solution(new_data, D);
+                if (new_cost < best_cost_j) {
+                    best_cost_j = new_cost;
+                    best_data_j = new_data;
+                }
+            }
+            if (best_cost_j < best_cost) {
+                best_data = best_data_j;
+                best_cost = best_cost_j;
+                cout << best_cost << endl;
+                write(best_data, string(name));
+            }
+        }
+        cout << "indice : " << indice << endl;
+    }
+    cout << best_cost << endl;
+    return best_data;
 }
