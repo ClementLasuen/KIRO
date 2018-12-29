@@ -1,5 +1,7 @@
 #include "kiro.h"
 
+//------------- Lecture Ecriture----------------------------------------------------------
+
 // return n le nombre de nodes
 int read_file(string distances_file, string nodes_file, vector<int> &D, vector<node> &distribution, vector<node> &terminal){
     string path_distance = string("../KIRO/Data/")+distances_file;
@@ -99,9 +101,50 @@ void write(vector<vector<vector<node>>> V, string name){
     fichier.close();
 }
 
+// besoin de la liste des distributions et terminaux
+vector<vector<vector<node>>> read_solution(string name, vector<node> distributions, vector<node> terminaux){
+    string file_name = string("../KIRO/")+name;
+    vector<vector<vector<node>>> data;
+    ifstream fichier(file_name.c_str());
+    if (fichier){
+        string ligne;
+        vector<vector<node>> distribution;
+        int cnt=0;
+        while(getline(fichier,ligne)){
+            cout << endl;
+            vector<node> chaine;
+            if (ligne[0]=='b'){
+                if (cnt>0){
+                    data.push_back(distribution);
+                    distribution.clear();
+                }
+            }
+            auto it=ligne.begin()+2;
+            string n("");
+            while(*it=='0'||*it=='1'||*it=='2'||*it=='3'||*it=='4'||*it=='5'||*it=='6'||*it=='7'||*it=='8'||*it=='9'||*it==' '){
+                while(*it=='0'||*it=='1'||*it=='2'||*it=='3'||*it=='4'||*it=='5'||*it=='6'||*it=='7'||*it=='8'||*it=='9'){
+                    cout<<(*it)<<" ";
+                    n+=(*it);
+                    it++;
+                }
+                it++;
+                if (!n.empty()){
+                    int number = stoi(n,nullptr);
+                    n = string("");
+                    if (number<distributions.size()) chaine.push_back(distributions[number]);
+                    else chaine.push_back(terminaux[number-distributions.size()]);
+                }
+            }
+            distribution.push_back(chaine);
+        }
+        fichier.close();
+    }
+    else{
+        cerr << "probleme de lecture" << endl;
+    }
+}
 
-
-
+//----------------------------------------------------------------------
 
 
 bool node::is_in(vector<node> V){

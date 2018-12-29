@@ -45,6 +45,8 @@ int read_file(string distances_file, string nodes_file, vector<int> &D, vector<n
 
 void write(vector<vector<vector<node>>> V, string name);
 
+vector<vector<vector<node>>> read_solution(string name, vector<node> distributions, vector<node> terminaux);
+
 int cost(vector<vector<node> > C, vector<int> lenght);
 
 int cost_solution(vector<vector<vector<node> > > C, vector<int> lenght);

@@ -1,4 +1,3 @@
-#include "read_write.h"
 #include "kiro.h"
 
 int main()
@@ -8,14 +7,19 @@ int main()
     vector<node> distribution;
     vector<node> terminal;
 
-    int n = read_file(string("pim/distances.csv"),string("pim/nodes0.csv"), D, distribution, terminal);
+    int n = read_file(string("nice/distances.csv"),string("nice/nodes0.csv"), D, distribution, terminal);
 
     vector<vector<vector<node>>> data = clustering(distribution, terminal, D);
+
+    vector<vector<vector<node>>> new_data = read_solution(string("resu_nice.txt"),distribution,terminal);
+
+
+    /*
 
     //switch_chain(data,D);
 
     int n_clustering = distribution.size() + terminal.size();
-    int rep = 1000;
+    int rep = 50000;
     vector<vector<vector<node>>> best_data = clustering(distribution, terminal, D);
     int best_cost = cost_solution(best_data, D);
     cout << best_cost << endl;
@@ -27,20 +31,20 @@ int main()
                 best_cost = new_cost;
                 best_data = new_data;
                 cout << best_cost << endl;
-                write(best_data, string("resu_pim.txt"));
+                //write(best_data, string("resu_pim.txt"));
             }
         }
         cout << "indice : " << indice << endl;
     }
 
-    //cout << best_cost << endl;
-
-    //write(best_data, string("resu_pim.txt"));
+    write(best_data, string("resu_nice.txt"));
+    */
 
     //cout << "Fin de la premiere heuristique" << endl << "Passage a la deuxieme" << endl;
 
     /*
     int N = 50000;
+    n_echanges = 10
     int cnt = 0;
 
     while(cnt<N){
@@ -59,7 +63,7 @@ int main()
     write(data, string("resu_pim.txt"));
     */
 
-    cout << best_cost << endl;
+    //cout << best_cost << endl;
 
     return 0;
 }
