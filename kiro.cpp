@@ -122,12 +122,13 @@ vector<vector<vector<node>>> read_solution(string name, vector<node> distributio
             }
             auto it=ligne.begin()+2;
             string n("");
-            while(*it=='0'||*it=='1'||*it=='2'||*it=='3'||*it=='4'||*it=='5'||*it=='6'||*it=='7'||*it=='8'||*it=='9'||*it==' '){
-                while(*it=='0'||*it=='1'||*it=='2'||*it=='3'||*it=='4'||*it=='5'||*it=='6'||*it=='7'||*it=='8'||*it=='9'){
-                    cout<<(*it)<<" ";
+            while(it!=ligne.end() && it!=ligne.end()+1){
+                while((*it=='0'||*it=='1'||*it=='2'||*it=='3'||*it=='4'||*it=='5'||*it=='6'||*it=='7'||*it=='8'||*it=='9')&& it!=ligne.end() && it!=ligne.end()+1){
+                    cout<<(*it);
                     n+=(*it);
                     it++;
                 }
+                cout<<" ";
                 it++;
                 if (!n.empty()){
                     int number = stoi(n,nullptr);
@@ -139,6 +140,8 @@ vector<vector<vector<node>>> read_solution(string name, vector<node> distributio
             distribution.push_back(chaine);
         }
         fichier.close();
+        data.push_back(distribution);
+        return(data);
     }
     else{
         cerr << "probleme de lecture" << endl;
