@@ -118,6 +118,7 @@ vector<vector<vector<node>>> read_solution(string name, vector<node> distributio
                     data.push_back(distribution);
                     distribution.clear();
                 }
+                cnt++;
             }
             auto it=ligne.begin()+2;
             string n("");
